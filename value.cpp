@@ -40,14 +40,14 @@ typedef Slice<char> char_slice;
 typedef Slice<Value> val_slice;
 
 struct Value {
-  enum {
+  enum Type {
     NUMBER,
     INT_SLICE,
     STRING,
     SLICE_HEADER
   } type;
 
-  enum {
+  enum Color {
     BLACK,
     GRAY,
     WHITE
