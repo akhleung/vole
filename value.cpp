@@ -14,6 +14,7 @@ public:
     ptr_ = allocator.template alloc<T>(len_);
   }
 private:
+  T*     block_;
   T*     ptr_;
   size_t len_;
   size_t cap_;
