@@ -6,17 +6,28 @@ struct Value;
 template<typename T>
 class Slice {
 public:
-  Slice(size_t len) : len_(len), cap_(len) {
-    beg_ = new T[cap_];
-  }
+  Slice(size_t len)
+  : mem_(new T[len]),
+    beg_(mem_),
+    len_(len),
+    cap_(len)
+  { }
+
   template<typename Allocator>
-  Slice(size_t len, Allocator& allocator) : len_(len), cap_(len) {
-    beg_ = allocator.template alloc<T>(len_);
-  }
+  Slice(size_t len, Allocator& allocator)
+  : mem_(allocator.template alloc<T>(len)),
+    beg_(mem_),
+    len_(len),
+    cap_(len)
+  { }
+
   template<typename Allocator>
-  Slice(size_t len, Allocator* allocator) : len_(len), cap_(len) {
-    beg_ = allocator->template alloc<T>(len_);
-  }
+  Slice(size_t len, Allocator* allocator)
+  : mem_(allocator->template alloc<T>(len)),
+    beg_(mem_),
+    len_(len),
+    cap_(len)
+  { }
 private:
   T*     mem_;
   T*     beg_;
@@ -38,7 +49,6 @@ int* New::alloc(size_t size) {
   cout << "Allocating " << size << " ints!" << endl;
   return new int[size];
 }
-
 
 typedef Slice<int> int_slice;
 typedef Slice<char> char_slice;
