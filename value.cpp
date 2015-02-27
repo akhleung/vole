@@ -5,7 +5,9 @@ struct Value;
 
 template<typename T>
 class Slice {
+
 public:
+
   Slice(size_t len)
   : mem_(new T[len]),
     beg_(mem_),
@@ -28,11 +30,14 @@ public:
     len_(len),
     cap_(len)
   { }
+
 private:
+
   T*     mem_;
   T*     beg_;
   size_t len_;
   size_t cap_;
+
 };
 
 class New {
