@@ -10,8 +10,12 @@ public:
     beg_ = new T[cap_];
   }
   template<typename Allocator>
-  Slice(size_t len, Allocator allocator) : len_(len), cap_(len) {
+  Slice(size_t len, Allocator& allocator) : len_(len), cap_(len) {
     beg_ = allocator.template alloc<T>(len_);
+  }
+  template<typename Allocator>
+  Slice(size_t len, Allocator* allocator) : len_(len), cap_(len) {
+    beg_ = allocator->template alloc<T>(len_);
   }
 private:
   T*     mem_;
@@ -45,7 +49,6 @@ struct Value {
     NUMBER,
     INT_SLICE,
     STRING,
-    SLICE_HEADER
   } type;
 
   enum Color {
@@ -66,12 +69,10 @@ struct Value {
 int main() {
   cout << "size of Slice: " << sizeof(Slice<Value>) << endl;
   cout << "size of Value: " << sizeof(Value) << endl;
-  auto ints = Slice<int>(20, New());
+  auto my_new = New();
+  auto ints = Slice<int>(20, my_new);
   cout << "size of ints: " << sizeof(ints) << endl;
-  auto vals = Slice<Value>(14, New());
+  auto vals = Slice<Value>(14, &my_new);
   cout << "size of vals: " << sizeof(vals) << endl;
   return 0;
 }
-
-
-
