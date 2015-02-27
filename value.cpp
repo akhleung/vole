@@ -7,15 +7,15 @@ template<typename T>
 class Slice {
 public:
   Slice(size_t len) : len_(len), cap_(len) {
-    ptr_ = new T[cap_];
+    beg_ = new T[cap_];
   }
   template<typename Allocator>
   Slice(size_t len, Allocator allocator) : len_(len), cap_(len) {
-    ptr_ = allocator.template alloc<T>(len_);
+    beg_ = allocator.template alloc<T>(len_);
   }
 private:
-  T*     block_;
-  T*     ptr_;
+  T*     mem_;
+  T*     beg_;
   size_t len_;
   size_t cap_;
 };
