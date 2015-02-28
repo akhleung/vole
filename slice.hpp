@@ -16,14 +16,11 @@ namespace Vole {
     size_t len;
     size_t cap;
 
-    Slice(size_t l, size_t c);
-    Slice(T* m, T* b, size_t l, size_t c);
+    template <typename Allocator>
+    Slice(Allocator& a, size_t l, size_t c);
+    template <typename Allocator>
+    Slice(Allocator* a, size_t l, size_t c);
     // We'll also use the default copy constructors and assignment operators.
-
-    template <typename Allocator>
-    Slice(size_t l, size_t c, Allocator& a);
-    template <typename Allocator>
-    Slice(size_t l, size_t c, Allocator* a);
 
     T& operator[](size_t i);
     Slice<T> slice(size_t start, size_t end); // s[start:end]
