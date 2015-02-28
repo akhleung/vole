@@ -34,7 +34,7 @@ namespace Vole {
   template <typename T, typename Allocator>
   Slice<T> append(Allocator& alloc, Slice<T> s, T t);
   template <typename T, typename Allocator>
-  Slice<T> concat(Allocator& alloc, Slice<T> s1, Slice<T> s2);
+  Slice<T> append(Allocator& alloc, Slice<T> s1, Slice<T> s2);
 
 }
 
