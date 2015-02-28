@@ -2,6 +2,9 @@
 #include <sstream>
 #include "slice.hpp"
 
+using namespace std;
+
+
 namespace Vole {
 
   using std::stringstream;
@@ -11,6 +14,14 @@ namespace Vole {
   Slice<T>::Slice(Allocator& a, size_t l, size_t c)
   : mem(a.template alloc<T>(c)),
     beg(mem),
+    len(l),
+    cap(c)
+  { }
+
+  template <typename T>
+  Slice<T>::Slice(T* m, T* b, size_t l, size_t c)
+  : mem(m),
+    beg(b),
     len(l),
     cap(c)
   { }
@@ -64,18 +75,25 @@ namespace Vole {
     return ss.str();
   }
 
+  template <typename T>
+  string Slice<T>::debug() {
+    stringstream out;
+    out << "len: " << len << ", cap: " << cap;
+    return out.str();
+  }
+
   template <typename T, typename Allocator>
   Slice<T> append(Allocator& alloc, Slice<T> s, T t) {
+    cout << s.debug() << endl;
     if (s.len < s.cap) {
-      s[s.len] = t;
-      Slice<T> newslice ( s.mem, s.beg, s.len+1, s.cap );
-      return newslice;
+      s.beg[s.len] = t;
+      return { s.mem, s.beg, s.len+1, s.cap };
     } else {
-      auto newslice { alloc, s.len+1, s.cap*2 };
+      Slice<T> newslice { alloc, s.len+1, s.cap*2 };
       for (int i = 0; i < s.len; i++) {
-        newslice[i] = s[i];
+        newslice.beg[i] = s[i];
       }
-      newslice[s.len] = t;
+      newslice.beg[s.len] = t;
       return newslice;
     }
   }
@@ -85,16 +103,16 @@ namespace Vole {
   Slice<T> append(Allocator& alloc, Slice<T> s1, Slice<T> s2) {
     if (s1.len+s2.len < s1.cap) {
       for (int i = 0; i < s2.len; i++) {
-        s1[s1.len+i] = s2[i];
+        s1.beg[s1.len+i] = s2[i];
       }
       return { s1.mem, s1.beg, s1.len+s2.len, s1.cap };
     } else {
-      auto newslice { alloc, s1.len+s2.len, (s1.cap+s2.len)*2 };
+      Slice<T> newslice { alloc, s1.len+s2.len, (s1.cap+s2.len)*2 };
       for (int i = 0; i < s1.len; i++) {
-        newslice[i] = s1[i];
+        newslice.beg[i] = s1[i];
       }
       for (int i = 0; i < s2.len; i++) {
-        newslice[s1.len+i] = s2[i];
+        newslice.beg[s1.len+i] = s2[i];
       }
       return newslice;
     }
@@ -102,7 +120,7 @@ namespace Vole {
 
 }
 
-using namespace std;
+
 using namespace Vole;
 
 class New {
@@ -115,21 +133,27 @@ public:
 };
 
 int main() {
-  auto my_new = New();
-  auto myslice = Slice<int>(my_new, 10, 10);
-  cout << "myslice: " << string(myslice) << endl;
-  auto myslice2 = append(my_new, myslice, 1);
-  // cout << "myslice: " << string(myslice2) << endl;
-  // auto myslice3 = append(my_new, myslice, 2);
-  // cout << "myslice: " << string(myslice3) << endl;
-  // auto myslice4 = Slice<int>(my_new, 10, 10);
-  // auto myslice5 = append(my_new, myslice2, 7);
-  // auto myslice6 = append(my_new, myslice2, 8);
-  // auto myslice7 = append(my_new, myslice2, 9);
-  // cout << "myslice2: " << string(myslice7) << endl;
+  try {
+    auto my_new = New();
+    auto myslice = Slice<int>(my_new, 10, 10);
+    cout << "myslice: " << string(myslice) << endl;
+    auto myslice2 = append(my_new, myslice, 1);
+    cout << "myslice: " << string(myslice2) << endl;
+    auto myslice3 = append(my_new, myslice2, 2);
+    cout << "myslice: " << string(myslice3) << endl;
 
-  // auto myslice8 = append(my_new, myslice, myslice2);
-  // cout << "myslice: " << string(myslice8) << endl;
+    auto myslice4 = Slice<int>(my_new, 10, 10);
+    auto myslice5 = append(my_new, myslice4, 7);
+    cout << "myslice2: " << string(myslice5) << endl;
+    auto myslice6 = append(my_new, myslice5, 8);
+    auto myslice7 = append(my_new, myslice6, 9);
+    cout << "myslice2: " << string(myslice7) << endl;
+
+    auto myslice8 = append(my_new, myslice3, myslice7);
+    cout << "myslice: " << string(myslice8) << endl;
+  } catch(char const* err) {
+    cout << err << endl;
+  }
 
 
   return 0;

@@ -18,6 +18,7 @@ namespace Vole {
 
     template <typename Allocator>
     Slice(Allocator& a, size_t l, size_t c);
+    Slice(T* m, T* b, size_t l, size_t c);
     // We'll also use the default copy constructors and assignment operators.
 
     T& operator[](size_t i);
@@ -29,6 +30,9 @@ namespace Vole {
     Slice<T> drop(size_t n); // s[n:]
 
     operator string();
+
+    string debug(); // prints length and cap
+
   };
 
   template <typename T, typename Allocator>
