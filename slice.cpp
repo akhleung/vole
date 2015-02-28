@@ -49,12 +49,12 @@ namespace Vole {
   }
 
   template <typename T>
-  Slice<T> Slice<T>::slice(size_t start, size_t end) {
-    if (end > len || start > end) {
+  Slice<T> Slice<T>::slice(size_t lower, size_t upper) {
+    if (upper > len || lower > upper) {
       // TODO: use an error class with more metadata
       throw "invalid range for slice";
     }
-    return { mem, beg + start, end - beg, cap - beg };
+    return { mem, beg + lower, upper - lower, cap - lower };
   }
 
   template <typename T>
