@@ -54,7 +54,7 @@ namespace Vole {
       // TODO: use an error class with more metadata
       throw "invalid range for slice";
     }
-    return { mem, beg + start, end - beg, cap };
+    return { mem, beg + start, end - beg, cap - beg };
   }
 
   template <typename T>
