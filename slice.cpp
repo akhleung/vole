@@ -1,3 +1,4 @@
+#include <iostream>
 #include <sstream>
 #include "slice.hpp"
 
@@ -62,4 +63,74 @@ namespace Vole {
     ss << ')';
     return ss.str();
   }
+
+  template <typename T, typename Allocator>
+  Slice<T> append(Allocator& alloc, Slice<T> s, T t) {
+    if (s.len < s.cap) {
+      s[s.len] = t;
+      Slice<T> newslice ( s.mem, s.beg, s.len+1, s.cap );
+      return newslice;
+    } else {
+      auto newslice { alloc, s.len+1, s.cap*2 };
+      for (int i = 0; i < s.len; i++) {
+        newslice[i] = s[i];
+      }
+      newslice[s.len] = t;
+      return newslice;
+    }
+  }
+
+
+  template <typename T, typename Allocator>
+  Slice<T> append(Allocator& alloc, Slice<T> s1, Slice<T> s2) {
+    if (s1.len+s2.len < s1.cap) {
+      for (int i = 0; i < s2.len; i++) {
+        s1[s1.len+i] = s2[i];
+      }
+      return { s1.mem, s1.beg, s1.len+s2.len, s1.cap };
+    } else {
+      auto newslice { alloc, s1.len+s2.len, (s1.cap+s2.len)*2 };
+      for (int i = 0; i < s1.len; i++) {
+        newslice[i] = s1[i];
+      }
+      for (int i = 0; i < s2.len; i++) {
+        newslice[s1.len+i] = s2[i];
+      }
+      return newslice;
+    }
+  }
+
+}
+
+using namespace std;
+using namespace Vole;
+
+class New {
+public:
+  template<typename T>
+  T* alloc(size_t size) {
+    cout << "Allocating " << size << " things!" << endl;
+    return new T[size];
+  }
+};
+
+int main() {
+  auto my_new = New();
+  auto myslice = Slice<int>(my_new, 10, 10);
+  cout << "myslice: " << string(myslice) << endl;
+  auto myslice2 = append(my_new, myslice, 1);
+  // cout << "myslice: " << string(myslice2) << endl;
+  // auto myslice3 = append(my_new, myslice, 2);
+  // cout << "myslice: " << string(myslice3) << endl;
+  // auto myslice4 = Slice<int>(my_new, 10, 10);
+  // auto myslice5 = append(my_new, myslice2, 7);
+  // auto myslice6 = append(my_new, myslice2, 8);
+  // auto myslice7 = append(my_new, myslice2, 9);
+  // cout << "myslice2: " << string(myslice7) << endl;
+
+  // auto myslice8 = append(my_new, myslice, myslice2);
+  // cout << "myslice: " << string(myslice8) << endl;
+
+
+  return 0;
 }
