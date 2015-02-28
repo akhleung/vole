@@ -15,15 +15,6 @@ namespace Vole {
   { }
 
   template <typename T>
-  template <typename Allocator>
-  Slice<T>::Slice(Allocator* a, size_t l, size_t c)
-  : mem(a->template alloc<T>(c)),
-    beg(mem),
-    len(l),
-    cap(c)
-  { }
-
-  template <typename T>
   T& Slice<T>::operator[](size_t i) {
     if (!(i < len)) {
       // TODO: use an error class with more metadata

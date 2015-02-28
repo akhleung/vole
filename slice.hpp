@@ -18,8 +18,6 @@ namespace Vole {
 
     template <typename Allocator>
     Slice(Allocator& a, size_t l, size_t c);
-    template <typename Allocator>
-    Slice(Allocator* a, size_t l, size_t c);
     // We'll also use the default copy constructors and assignment operators.
 
     T& operator[](size_t i);
@@ -33,10 +31,10 @@ namespace Vole {
     operator string();
   };
 
-  template <typename T>
-  Slice<T> append(Slice<T> s, T t);
-  template <typename T>
-  Slice<T> concat(Slice<T> s1, Slice<T> s2);
+  template <typename T, typename Allocator>
+  Slice<T> append(Allocator& alloc, Slice<T> s, T t);
+  template <typename T, typename Allocator>
+  Slice<T> concat(Allocator& alloc, Slice<T> s1, Slice<T> s2);
 
 }
 
