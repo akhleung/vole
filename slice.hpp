@@ -130,7 +130,7 @@ namespace Vole {
       s.beg[s.len] = t;
       return { s.mem, s.beg, s.len+1, s.cap };
     } else {
-      Slice<T> newslice { alloc, s.len+1, s.cap*2 };
+      Slice<T> newslice { alloc, s.len+1, (s.cap+1)*2 };
       for (int i = 0; i < s.len; i++) {
         newslice.beg[i] = s[i];
       }
@@ -162,21 +162,23 @@ namespace Vole {
   template <typename T>
   template <typename P>
   Slice<T> Slice<T>::take_while(P pred) {
-    for (int i = 0; i < len; i++) {
-      if (!P((*this)[i])) {
+    for (size_t i = 0; i < len; i++) {
+      if (!pred((*this)[i])) {
         return slice(0, i);
       }
     }
+    return (*this);
   }
 
   template <typename T>
   template <typename P>
   Slice<T> Slice<T>::drop_while(P pred) {
-    for (int i = len; i > 0; i--) {
-      if (!P((*this)[i])) {
+    for (size_t i = 0; i < len; i++) {
+      if (!pred((*this)[i])) {
         return slice(i, len);
       }
     }
+    return (*this);
   }
 
   template <typename T>
