@@ -30,10 +30,10 @@ namespace Vole {
     Slice<T> take(size_t n); // s[:n]
     Slice<T> drop(size_t n); // s[n:]
 
-    template <typename P>
-    Slice<T> take_while(P pred);
-    template <typename P>
-    Slice<T> drop_while(P pred);
+    template <typename Predicate>
+    Slice<T> take_while(Predicate pred);
+    template <typename Predicate>
+    Slice<T> drop_while(Predicate pred);
 
     Slice<T> take_half();
     Slice<T> drop_half();
@@ -130,65 +130,59 @@ namespace Vole {
       s.beg[s.len] = t;
       return { s.mem, s.beg, s.len+1, s.cap };
     } else {
-      Slice<T> newslice { alloc, s.len+1, (s.cap+1)*2 };
-      for (int i = 0; i < s.len; i++) {
-        newslice.beg[i] = s[i];
+      Slice<T> new_slice { alloc, s.len+1, s.cap ? s.cap * 2 : 1 };
+      for (size_t i = 0; i < s.len; ++i) {
+        new_slice.beg[i] = s[i];
       }
-      newslice.beg[s.len] = t;
-      return newslice;
+      new_slice.beg[s.len] = t;
+      return new_slice;
     }
   }
 
 
   template <typename T, typename Allocator>
   Slice<T> append(Allocator& alloc, Slice<T> s1, Slice<T> s2) {
-    if (s1.len+s2.len < s1.cap) {
-      for (int i = 0; i < s2.len; i++) {
+    if (s1.len + s2.len < s1.cap) {
+      for (size_t i = 0; i < s2.len; ++i) {
         s1.beg[s1.len+i] = s2[i];
       }
-      return { s1.mem, s1.beg, s1.len+s2.len, s1.cap };
+      return { s1.mem, s1.beg, s1.len + s2.len, s1.cap };
     } else {
-      Slice<T> newslice { alloc, s1.len+s2.len, (s1.cap+s2.len)*2 };
-      for (int i = 0; i < s1.len; i++) {
-        newslice.beg[i] = s1[i];
+      Slice<T> new_slice { alloc, s1.len + s2.len, s1.cap + s2.len };
+      for (size_t i = 0; i < s1.len; ++i) {
+        new_slice.beg[i] = s1[i];
       }
-      for (int i = 0; i < s2.len; i++) {
-        newslice.beg[s1.len+i] = s2[i];
+      for (size_t i = 0; i < s2.len; ++i) {
+        new_slice.beg[s1.len+i] = s2[i];
       }
-      return newslice;
+      return new_slice;
     }
   }
 
   template <typename T>
-  template <typename P>
-  Slice<T> Slice<T>::take_while(P pred) {
-    for (size_t i = 0; i < len; i++) {
-      if (!pred((*this)[i])) {
-        return slice(0, i);
-      }
-    }
-    return (*this);
+  template <typename Predicate>
+  Slice<T> Slice<T>::take_while(Predicate pred) {
+    size_t i = 0;
+    while (pred((*this)[i])) ++i;
+    return take(i);
   }
 
   template <typename T>
-  template <typename P>
-  Slice<T> Slice<T>::drop_while(P pred) {
-    for (size_t i = 0; i < len; i++) {
-      if (!pred((*this)[i])) {
-        return slice(i, len);
-      }
-    }
-    return (*this);
+  template <typename Predicate>
+  Slice<T> Slice<T>::drop_while(Predicate pred) {
+    size_t i = 0;
+    while (pred((*this)[i])) ++i;
+    return drop(i);
   }
 
   template <typename T>
   Slice<T> Slice<T>::take_half() {
-    return slice(0, len/2);
+    return take(len / 2);
   }
 
   template <typename T>
   Slice<T> Slice<T>::drop_half() {
-    return slice(len/2, len);
+    return drop(len / 2);
   }
 
 }
