@@ -1,5 +1,5 @@
 #include <iostream>
-#include "slice.hpp"
+#include "../src/slice.hpp"
 
 using namespace std;
 using namespace Vole;
@@ -13,77 +13,51 @@ public:
   }
 };
 
-bool lessthan5(int x) {
-  if (x < 5) {
-    return true;
-  } else {
-    return false;
-  }
-}
+using Strs = Slice<const char*>;
+using Ints = Slice<int>;
 
 int main() {
-  try {
-    auto alloc = New();
-    auto myslice = Slice<int>(alloc, 10, 10);
-    cout << "myslice: " << string(myslice) << endl;
-    auto myslice2 = append(alloc, myslice, 1);
-    cout << "myslice: " << string(myslice2) << endl;
-    auto myslice3 = append(alloc, myslice2, 2);
-    cout << "myslice: " << string(myslice3) << endl;
+  auto alloc = New();
 
-    auto myslice4 = Slice<int>(alloc, 0, 0);
-    auto myslice5 = append(alloc, myslice4, 7);
-    cout << "myslice2: " << string(myslice5) << endl;
-    auto myslice6 = append(alloc, myslice5, 8);
-    auto myslice7 = append(alloc, myslice6, 9);
-    cout << "myslice2: " << string(myslice7) << endl;
+  auto empty = Strs(alloc, 0, 0);
+  cout << "empty slice: " << string(empty) << endl;
 
-    auto myslice8 = append(alloc, myslice3, myslice7);
-    cout << "myslice: " << string(myslice8) << endl;
-    auto myslice9 = myslice8.take_half();
-    cout << "myslice take half: " << string(myslice9) << endl;
-    auto myslice10 = myslice9.drop_half();
-    cout << "myslice drop half: " << string(myslice10) << endl;
+  auto not_so_empty = append(alloc, empty, "not");
+  not_so_empty = append(alloc, not_so_empty, "so");
+  not_so_empty = append(alloc, not_so_empty, "empty");
+  cout << "not-so-empty slice: " << string(not_so_empty) << endl;
+  cout << "empty slice: " << string(empty) << endl;
 
+  auto still_not_so_empty = Strs(alloc, { "still" });
+  still_not_so_empty = append(alloc, still_not_so_empty, not_so_empty);
+  cout << "still not-so-empty: " << string(still_not_so_empty) << endl;
+  cout << "not-so-empty slice: " << string(not_so_empty) << endl;
 
+  auto more_room_than_needed = Strs(alloc, 0, 10);
+  more_room_than_needed = append(alloc, more_room_than_needed, { "hello", "my", "name", "is", "Aaron" });
+  cout << "more room than needed: " << string(more_room_than_needed) << endl;
 
-    auto myslice11 = Slice<int>(alloc, 0, 0);
-    auto myslice12 = append(alloc, myslice11, 1);
-    auto myslice13 = append(alloc, myslice12, 2);
-    auto myslice14 = append(alloc, myslice13, 3);
-    auto myslice15 = append(alloc, myslice14, 4);
-    auto myslice16 = append(alloc, myslice15, 5);
-    auto myslice17 = append(alloc, myslice16, 6);
-    auto myslice18 = append(alloc, myslice17, 7);
-    auto myslice19 = append(alloc, myslice18, 8);
-    auto myslice20 = append(alloc, myslice19, 9);
-    auto myslice21 = append(alloc, myslice20, 10);
+  auto and_dont_wear_it_out = append(alloc, more_room_than_needed, { "and", "don't", "wear", "it", "out!" });
+  cout << "and don't wear it out!: " << string(and_dont_wear_it_out) << endl;
+  cout << "more room than needed: " << string(more_room_than_needed) << endl;
 
-    auto myslice22 = myslice21.take_while(lessthan5);
-    cout << "myslice take while less than 5: " << string(myslice22) << endl;
-    auto myslice23 = myslice21.drop_while(lessthan5);
-    cout << "myslice drop while less than 5: " << string(myslice23) << endl;
-    cout << "myslice take half: " << string(myslice23.take_half()) << endl;
-    cout << "myslice drop half: " << string(myslice23.drop_half()) << endl;
+  auto upto10 = Ints(alloc, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+  cout << "up to 10: " << string(upto10) << endl;
 
-    auto myString = Slice<char>(alloc, 0, 3);
-    myString = append(alloc, myString, 'a');
-    myString = append(alloc, myString, 'b');
-    myString = append(alloc, myString, 'c');
-    cout << "mystring: " << string(myString) << endl;
+  auto lessthan5 = upto10.take_while([](int x) { return x < 5; });
+  auto morethan4 = upto10.drop_while([](int x) { return x < 5; });
+  cout << "less than 5: " << string(lessthan5) << endl;
+  cout << "more than 4: " << string(morethan4) << endl;
+  cout << "up to 10: " << string(upto10) << endl;
 
-    auto myMsg = Slice<const char*>(alloc, 0, 0);
-    myMsg = append(alloc, myMsg, {"hello", "my", "name", "is", "Aaron"});
-    cout << "myMsg: " << string(myMsg) << endl;
+  auto rotated = append(alloc, morethan4, lessthan5);
+  cout << "rotated: " << string(rotated) << endl;
+  cout << "less than 5: " << string(lessthan5) << endl;
+  cout << "more than 4: " << string(morethan4) << endl;
+  cout << "up to 10: " << string(upto10) << endl;
 
-    auto myOtherMsg = Slice<const char*>(alloc, { "this", "is", "another", "slice", "of", "strings" });
-    cout << "myOtherMsg: " << string(myOtherMsg) << endl;
-
-
-  } catch(char const* err) {
-    cout << err << endl;
-  }
-
+  auto upto10again = append(alloc, rotated.drop_half(), rotated.take_half());
+  cout << "up to 10 again: " << string(upto10again) << endl;
 
   return 0;
 }
