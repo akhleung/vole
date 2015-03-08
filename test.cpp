@@ -66,6 +66,12 @@ int main() {
     cout << "myslice take half: " << string(myslice23.take_half()) << endl;
     cout << "myslice drop half: " << string(myslice23.drop_half()) << endl;
 
+    auto myString = Slice<char>(alloc, 3, 3);
+    myString = append(alloc, myString, 'a');
+    myString = append(alloc, myString, 'b');
+    myString = append(alloc, myString, 'c');
+    cout << "mystring: " << string(myString) << endl;
+
 
   } catch(char const* err) {
     cout << err << endl;

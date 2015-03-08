@@ -112,6 +112,16 @@ namespace Vole {
     }
   };
 
+  template<>
+  Slice<const char>::operator std::string() {
+    return std::string(beg, len);
+  }
+
+  template<>
+  Slice<char>::operator std::string() {
+    return std::string(beg, len);
+  }
+
   template <typename T>
   void copy(Slice<T> src, Slice<T> dst) {
     size_t len = std::min(src.len, dst.len);
