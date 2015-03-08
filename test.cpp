@@ -66,11 +66,15 @@ int main() {
     cout << "myslice take half: " << string(myslice23.take_half()) << endl;
     cout << "myslice drop half: " << string(myslice23.drop_half()) << endl;
 
-    auto myString = Slice<char>(alloc, 3, 3);
+    auto myString = Slice<char>(alloc, 0, 3);
     myString = append(alloc, myString, 'a');
     myString = append(alloc, myString, 'b');
     myString = append(alloc, myString, 'c');
     cout << "mystring: " << string(myString) << endl;
+
+    auto myMsg = Slice<string>(alloc, 0, 10);
+    myMsg = Vole::fill(alloc, myMsg, initializer_list<string>{"hello", "my", "name", "is", "Aaron"});
+    cout << "myMsg: " << string(myMsg) << endl;
 
 
   } catch(char const* err) {

@@ -4,7 +4,9 @@
 #include <cstddef>
 #include <string>
 #include <sstream>
+#include <iostream>
 #include <algorithm>
+#include <initializer_list>
 
 namespace Vole {
 
@@ -156,6 +158,12 @@ namespace Vole {
       copy(s2, dest.drop(s1.len));
       return dest;
     }
+  }
+
+  template <typename T, typename Allocator>
+  Slice<T> fill(Allocator alloc, Slice<T> s, std::initializer_list<T> list) {
+    for (auto elem : list) s = append(alloc, s, elem);
+    return s;
   }
 
 }
