@@ -27,6 +27,14 @@ namespace Vole {
       cap(c)
     { }
 
+    template <typename Allocator>
+    Slice(Allocator& a, std::initializer_list<T> l)
+    : mem(a.template alloc<T>(l.size())),
+      beg(mem),
+      len(l.size()),
+      cap(len)
+    { std::copy(l.begin(), l.end(), beg); }
+
     Slice(T* m, T* b, size_t l, size_t c)
     : mem(m),
       beg(b),
@@ -161,7 +169,7 @@ namespace Vole {
   }
 
   template <typename T, typename Allocator>
-  Slice<T> append(Allocator alloc, Slice<T> s, std::initializer_list<T> l) {
+  Slice<T> append(Allocator& alloc, Slice<T> s, std::initializer_list<T> l) {
     if (s.len + l.size() > s.cap) {
       Slice<T> dest { alloc, s.len + l.size(), s.len + l.size() };
       copy(s, dest.take(s.len));

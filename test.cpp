@@ -76,6 +76,9 @@ int main() {
     myMsg = append(alloc, myMsg, {"hello", "my", "name", "is", "Aaron"});
     cout << "myMsg: " << string(myMsg) << endl;
 
+    auto myOtherMsg = Slice<const char*>(alloc, { "this", "is", "another", "slice", "of", "strings" });
+    cout << "myOtherMsg: " << string(myOtherMsg) << endl;
+
 
   } catch(char const* err) {
     cout << err << endl;
