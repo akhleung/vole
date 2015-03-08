@@ -149,21 +149,28 @@ namespace Vole {
 
   template <typename T, typename Allocator>
   Slice<T> append(Allocator& alloc, Slice<T> s1, Slice<T> s2) {
-    if (s1.len + s2.len < s1.cap) {
-      copy(s2, { s1.mem, s1.beg + s1.len, s2.len, s1.cap });
-      return { s1.mem, s1.beg, s1.len + s2.len, s1.cap };
-    } else {
-      Slice<T> dest { alloc, s1.len + s2.len, s1.cap + s2.len };
+    if (s1.len + s2.len > s1.cap) {
+      Slice<T> dest { alloc, s1.len + s2.len, s1.len + s2.len };
       copy(s1, dest.take(s1.len));
       copy(s2, dest.drop(s1.len));
       return dest;
+    } else {
+      copy(s2, { s1.mem, s1.beg + s1.len, s2.len, s1.cap });
+      return { s1.mem, s1.beg, s1.len + s2.len, s1.cap };
     }
   }
 
   template <typename T, typename Allocator>
-  Slice<T> fill(Allocator alloc, Slice<T> s, std::initializer_list<T> list) {
-    for (auto elem : list) s = append(alloc, s, elem);
-    return s;
+  Slice<T> append(Allocator alloc, Slice<T> s, std::initializer_list<T> l) {
+    if (s.len + l.size() > s.cap) {
+      Slice<T> dest { alloc, s.len + l.size(), s.len + l.size() };
+      copy(s, dest.take(s.len));
+      std::copy(l.begin(), l.end(), dest.beg + s.len);
+      return dest;
+    } else {
+      std::copy(l.begin(), l.end(), s.beg + s.len);
+      return { s.mem, s.beg, s.len + l.size(), s.cap };
+    }
   }
 
 }

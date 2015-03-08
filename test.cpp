@@ -72,8 +72,8 @@ int main() {
     myString = append(alloc, myString, 'c');
     cout << "mystring: " << string(myString) << endl;
 
-    auto myMsg = Slice<const char*>(alloc, 0, 10);
-    myMsg = Vole::fill(alloc, myMsg, {"hello", "my", "name", "is", "Aaron"});
+    auto myMsg = Slice<const char*>(alloc, 0, 0);
+    myMsg = append(alloc, myMsg, {"hello", "my", "name", "is", "Aaron"});
     cout << "myMsg: " << string(myMsg) << endl;
 
 
