@@ -1,0 +1,72 @@
+(if (< x 0)
+    (something x)
+    (other stuff)
+    (etc)
+  ? (= x 0)
+    (another x)
+    (more stuff)
+    (so forth)
+  : (otherwise this)
+    (blah blah))
+
+(cond ((< x 0)
+       (something x)
+       (other stuff)
+       (etc))
+      ((= x 0)
+       (another x)
+       (more stuff)
+       (so forth))
+      (else
+       (otherwise this)
+       (blah blah)))
+
+(define lemgth
+  ((()) 0)
+  (((x . xs)) (+ 1 (length xs))))
+
+(define map
+  ((f () acc)
+   acc)
+  ((f (x . xs) acc)
+   (map f xs (append acc (f x)))))
+
+(define
+  ((map f () acc)
+   acc)
+  ((map f (x . xs) acc)
+   (map f xs (append acc (f x)))))
+
+(def (length ()) 
+     0
+   | (length (x . xs))
+     (+ 1 (length xs)))
+
+(def (map f () acc)
+     acc
+   : (map f (x . xs) acc)
+     (map f xs (append acc (f x))))
+
+(def (filter p () acc)
+     acc
+   | (filter p (x . xs) acc) ? (p x) (filter p xs (append acc x))
+                             :       (filter p xs acc))
+
+(def (filter p () acc)
+     acc
+
+   | (filter p (x xs ...) acc)
+     (filter p xs (if (p x) (append acc x) acc)))
+
+def map(f, [], acc) {
+  acc
+} | map(f, [x, xs...], acc) {
+  map(f, xs, acc + f(x))
+}
+
+def filter(p, [], acc) {
+  acc
+} | filter(p, [x, xs...], acc) {
+  filter(p, xs, if p(x) acc + x else acc)
+}
+
