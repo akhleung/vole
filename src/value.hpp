@@ -2,12 +2,14 @@
 #define VOLE_VALUE
 
 #include <string>
+#include <iostream>
 #include "slice.hpp"
 
 namespace Vole {
 
   struct Value;
   using Vector = Slice<Value>;
+  using String = Slice<char>;
 
   struct Value {
     enum Type {
@@ -31,11 +33,21 @@ namespace Vole {
       std::string string;
       Vector vector;
       Content() { }
-      Content(const Content& c) { }
+
+      Content(std::string s) {
+        std::cout << "union string ctor" << std::endl; 
+        new (&string) std::string(s);
+      }
+
+      Content(const Content& c) {
+        std::cout << "union copy ctor" << std::endl;
+      }
+
       ~Content() { }
     } content;
 
     Value(Type t, Color c = BLACK) : type(t), color(c) { }
+    Value(std::string s) : type(STRING), color(BLACK), content {s} { }
 
     static Value make_boolean(bool b);
     static Value make_number(double n);
