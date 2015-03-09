@@ -35,7 +35,12 @@ namespace Vole {
       ~Content() { }
     } content;
 
-    Value(Type t, Color c) : type(t), color(c) { }
+    Value(Type t, Color c = BLACK) : type(t), color(c) { }
+
+    static Value make_boolean(bool b);
+    static Value make_number(double n);
+    static Value make_symbol(std::string s);
+    static Value make_string(std::string s);
 
     // template <typename Allocator>
     // static Value make_boolean(Allocator& alloc, bool b) {
