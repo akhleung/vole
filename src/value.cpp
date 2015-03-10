@@ -51,9 +51,9 @@ int main() {
   Value num = Value::make_number(3.14);
   cout << "size of num: " << sizeof(num) << endl;
   cout << "value of num: " << num.content.number << endl;
-  Value str = Value::make_string("hello there");
-  cout << "size of str: " << sizeof(str) << endl;
-  cout << "value of str: " << str.content.string << endl;
+  // Value str = Value::make_string("hello there");
+  // cout << "size of str: " << sizeof(str) << endl;
+  // cout << "value of str: " << str.content.string << endl;
 
   auto str2 = Value(string("another string"));
   cout << "size of str2: " << sizeof(str2) << endl;
