@@ -59,33 +59,14 @@ namespace Vole {
       return { mem, beg + lower, upper - lower, cap - lower };
     }
 
-    T& first() {
-      return (*this)[0];
-    }
-
-    T& head() {
-      return first();
-    }
-
-    T& last() {
-      return (*this)[len-1];
-    }
-
-    Slice<T> take(size_t n) {
-      return slice(0, n);
-    }
-
-    Slice<T> drop(size_t n) {
-      return slice(n, len);
-    }
-
-    Slice<T> take_half() {
-      return take(len / 2);
-    }
-
-    Slice<T> drop_half() {
-      return drop(len / 2);
-    }
+    T&       first()        { return (*this)[0]; }
+    T&       last()         { return (*this)[len-1]; }
+    T&       head()         { return first(); }
+    Slice<T> tail()         { return slice(1, len); }
+    Slice<T> take(size_t n) { return slice(0, n); }
+    Slice<T> drop(size_t n) { return slice(n, len); }
+    Slice<T> take_half()    { return take(len / 2); }
+    Slice<T> drop_half()    { return drop(len / 2); }
 
     template <typename Predicate>
     Slice<T> take_while(Predicate pred) {
@@ -99,10 +80,6 @@ namespace Vole {
       size_t i = 0;
       while (pred((*this)[i])) ++i;
       return drop(i);
-    }
-
-    Slice<T> tail() {
-      return drop(1);
     }
 
     operator std::string() {
