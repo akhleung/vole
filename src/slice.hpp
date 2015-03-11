@@ -2,9 +2,9 @@
 #define VOLE_SLICE
 
 #include <cstddef>
+#include <cstring>
 #include <string>
 #include <sstream>
-#include <iostream>
 #include <algorithm>
 #include <initializer_list>
 
@@ -156,6 +156,28 @@ namespace Vole {
       std::copy(l.begin(), l.end(), s.beg + s.len);
       return { s.mem, s.beg, s.len + l.size(), s.cap };
     }
+  }
+
+  template <typename Allocator>
+  Slice<char> slice_from_string(Allocator& alloc, const char* str, size_t n) {
+    auto result = Slice<char>(alloc, n, n);
+    std::copy(str, str + n, result.beg);
+    return result;
+  }
+
+  template <typename Allocator>
+  Slice<char> slice_from_string(Allocator& alloc, const char* str) {
+    auto n = std::strlen(str);
+    auto result = Slice<char>(alloc, n, n);
+    std::copy(str, str + n, result.beg);
+    return result;
+  }
+
+  template <typename Allocator>
+  Slice<char> slice_from_string(Allocator& alloc, std::string str) {
+    auto result = Slice<char>(alloc, str.size(), str.size());
+    std::copy(str.begin(), str.end(), result.beg);
+    return result;
   }
 
 }
