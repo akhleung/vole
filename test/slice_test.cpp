@@ -61,5 +61,15 @@ int main() {
   auto upto10again = append(alloc, rotated.drop_half(), rotated.take_half());
   cout << "up to 10 again: " << string(upto10again) << endl;
 
+  auto from_string = slice_from_string(alloc, "slice from string!");
+  cout << "from string: " << string(from_string) << endl;
+  cout << "its length: " << from_string.len << endl;
+
+  auto from_another_string = slice_from_string(alloc, "from another string!", 12);
+  cout << "from another string: " << string(from_another_string) << endl;
+
+  auto from_std_string = slice_from_string(alloc, string("third string"));
+  cout << "from a C++ string object: " << string(from_std_string) << endl;
+
   return 0;
 }

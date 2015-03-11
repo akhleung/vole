@@ -1,93 +1,61 @@
+#include "value.hpp"
+#include "allocator.hpp"
 #include <iostream>
 
-using namespace std;
-struct Value;
+namespace Vole {
 
-template<typename T>
-class Slice {
+  // template <typename Allocator>
+  // Value Value::make_boolean(Allocator& alloc, bool b) {
+  //   Value v { BOOLEAN, BLACK };
+  //   v.content.boolean = false;
+  //   return v;
+  // }
+  using std::string;
 
-public:
-
-  Slice(size_t len)
-  : mem_(new T[len]),
-    beg_(mem_),
-    len_(len),
-    cap_(len)
-  { }
-
-  template<typename Allocator>
-  Slice(size_t len, Allocator& allocator)
-  : mem_(allocator.template alloc<T>(len)),
-    beg_(mem_),
-    len_(len),
-    cap_(len)
-  { }
-
-  template<typename Allocator>
-  Slice(size_t len, Allocator* allocator)
-  : mem_(allocator->template alloc<T>(len)),
-    beg_(mem_),
-    len_(len),
-    cap_(len)
-  { }
-
-private:
-
-  T*     mem_;
-  T*     beg_;
-  size_t len_;
-  size_t cap_;
-
-};
-
-class New {
-public:
-  template<typename T>
-  T* alloc(size_t size) {
-    cout << "Allocating " << size << " things!" << endl;
-    return new T[size];
+  Value Value::make_boolean(bool b) {
+    Value v { BOOLEAN };
+    v.content.boolean = b;
+    return v;
   }
-};
 
-template<>
-int* New::alloc(size_t size) {
-  cout << "Allocating " << size << " ints!" << endl;
-  return new int[size];
+  Value Value::make_number(double n) {
+    Value v { NUMBER };
+    v.content.number = n;
+    return v;
+  }
+
+  Value Value::make_symbol(string s) {
+    Value v { SYMBOL };
+    v.content.symbol = s;
+    return v;
+  }
+
+  Value Value::make_string(string s) {
+    Value v { STRING };
+    std::cout << "about to assign to union" << std::endl;
+    v.content.string = s;
+    return v;
+  }
+
 }
 
-typedef Slice<int> int_slice;
-typedef Slice<char> char_slice;
-typedef Slice<Value> val_slice;
-
-struct Value {
-  enum Type {
-    NUMBER,
-    INT_SLICE,
-    STRING,
-  } type;
-
-  enum Color {
-    BLACK,
-    GRAY,
-    WHITE
-  } color;
-
-  union Content {
-    double number;
-    int_slice ints;
-    char_slice chars;
-    val_slice vals;
-    Content() { }
-  } content;
-};
+using namespace Vole;
+using namespace std;
 
 int main() {
-  cout << "size of Slice: " << sizeof(Slice<Value>) << endl;
-  cout << "size of Value: " << sizeof(Value) << endl;
-  auto my_new = New();
-  auto ints = Slice<int>(20, my_new);
-  cout << "size of ints: " << sizeof(ints) << endl;
-  auto vals = Slice<Value>(14, &my_new);
-  cout << "size of vals: " << sizeof(vals) << endl;
-  return 0;
+  auto alloc = Allocator();
+  cout << "size of value: " << sizeof(Value) << endl;
+  Value val = Value::make_boolean(true);
+  cout << "size of bval: " << sizeof(val) << endl;
+  cout << "value of bval: " << val.content.boolean << endl;
+  Value num = Value::make_number(3.14);
+  cout << "size of num: " << sizeof(num) << endl;
+  cout << "value of num: " << num.content.number << endl;
+  // Value str = Value::make_string("hello there");
+  // cout << "size of str: " << sizeof(str) << endl;
+  // cout << "value of str: " << str.content.string << endl;
+
+  auto str2 = Value(string("another string"));
+  cout << "size of str2: " << sizeof(str2) << endl;
+  cout << "value of str2: " << str2.content.string << endl;
 }
