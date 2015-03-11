@@ -8,8 +8,8 @@
 namespace Vole {
 
   struct Value;
-  using Vector = Slice<Value>;
   using String = Slice<char>;
+  using Vector = Slice<Value>;
 
   struct Value {
     enum Type {
@@ -17,9 +17,12 @@ namespace Vole {
       NUMBER,
       SYMBOL,
       STRING,
-      VECTOR
+      REGEXP,
+      VECTOR,
+      MAPPING
     } type;
 
+    // for garbage collection
     enum Color {
       BLACK,
       GRAY,
@@ -29,10 +32,14 @@ namespace Vole {
     union Content {
       bool boolean;
       double number;
-      std::string symbol; // TODO: use our own symbol object
-      std::string string;
+      // Symbol symbol;
+      String string;
+      // Regexp regexp;
       Vector vector;
+      // Mapping mapping;
       Content() { }
+
+      
 
       Content(std::string s) {
         std::cout << "union string ctor" << std::endl; 
