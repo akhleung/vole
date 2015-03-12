@@ -59,7 +59,11 @@ int main() {
   cout << "size of str2: " << sizeof(str2) << endl;
   cout << "value of str2: " << string(str2.content.string) << endl;
 
-  auto vect = Value(alloc, {val, num, str2});
-  cout << "value of vect: " << string(vect.content.vector) << endl;
+  auto str3 = slice_from_string(alloc, "a string slice");
+  auto strval = Value(str3);
+  cout << "value of strval: " << string(strval.content.string) << endl;
+
+  // auto vect = Value(alloc, {val, num, str2});
+  // cout << "value of vect: " << string(vect.content.vector) << endl;
 
 }

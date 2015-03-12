@@ -71,7 +71,10 @@ namespace Vole {
       ~Content() { }
     } content;
 
-    Value(Type t, Color c = BLACK) : type(t), color(c) { }
+    template <typename T>
+    Value(T thing, Color c = BLACK) { }
+
+    Value(Type t, Color c = BLACK): type(t), color(c) { }
     template <typename Allocator>
     Value(Allocator& alloc, std::string s) : type(STRING), color(BLACK), content(alloc, s) { }
     template <typename Allocator>
@@ -101,6 +104,26 @@ namespace Vole {
     // template <typename Allocator>
     // static Value make_vector(Allocator& alloc, size_t len, size_t cap);
   };
+
+  template <>
+  Value::Value<bool>(bool b, Color c)
+  : type(BOOLEAN), color(c)
+  { }
+
+  template <>
+  Value::Value<double>(double d, Color c)
+  : type(NUMBER), color(c)
+  { }
+
+  template <>
+  Value::Value<String>(String s, Color c)
+  : type(STRING), color(c)
+  { }
+
+  template <>
+  Value::Value<Vector>(Vector v, Color c)
+  : type(VECTOR), color(c)
+  { }
 
 }
 
