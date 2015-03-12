@@ -32,6 +32,7 @@ namespace Vole {
     union Content {
       bool boolean;
       double number;
+      // wrapper around a String, every symbol with a name is unique
       // Symbol symbol;
       String string;
       // Regexp regexp;
@@ -39,12 +40,29 @@ namespace Vole {
       // Mapping mapping;
       Content() { }
 
-      
-
-      Content(std::string s) {
-        std::cout << "union string ctor" << std::endl; 
-        new (&string) std::string(s);
+      template <typename Allocator> 
+      Content(Allocator& alloc, std::string str) {
+        std::cout << "string constructor" << std::endl;
+        new (&string) String(alloc, str.size(), str.size());
+        std::copy(str.begin(), str.end(), string.beg);
       }
+
+      template <typename Allocator> 
+      Content(Allocator& alloc, size_t len, size_t cap) {
+        std::cout << "vector constructor" << std::endl;
+        new (&vector) Vector(alloc, len, cap);
+      }
+
+      template <typename Allocator> 
+      Content(Allocator& alloc, std::initializer_list<Value> l) {
+        std::cout << "initializer list constructor" << std::endl;
+        new (&vector) Vector(alloc, l);
+      }
+
+      // Content(std::string s) {
+      //   std::cout << "union string ctor" << std::endl; 
+      //   new (&string) std::string(s);
+      // }
 
       Content(const Content& c) {
         std::cout << "union copy ctor" << std::endl;
@@ -54,7 +72,12 @@ namespace Vole {
     } content;
 
     Value(Type t, Color c = BLACK) : type(t), color(c) { }
-    Value(std::string s) : type(STRING), color(BLACK), content {s} { }
+    template <typename Allocator>
+    Value(Allocator& alloc, std::string s) : type(STRING), color(BLACK), content(alloc, s) { }
+    template <typename Allocator>
+    Value(Allocator& alloc, size_t len, size_t cap) : type(VECTOR), color(BLACK), content(alloc, len, cap) { }
+    template <typename Allocator>
+    Value(Allocator& alloc, std::initializer_list<Value> l) : type(VECTOR), color(BLACK), content(alloc, l) { }
 
     static Value make_boolean(bool b);
     static Value make_number(double n);

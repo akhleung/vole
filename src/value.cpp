@@ -24,18 +24,18 @@ namespace Vole {
     return v;
   }
 
-  Value Value::make_symbol(string s) {
-    Value v { SYMBOL };
-    v.content.symbol = s;
-    return v;
-  }
+  // Value Value::make_symbol(string s) {
+  //   Value v { SYMBOL };
+  //   v.content.symbol = s;
+  //   return v;
+  // }
 
-  Value Value::make_string(string s) {
-    Value v { STRING };
-    std::cout << "about to assign to union" << std::endl;
-    v.content.string = s;
-    return v;
-  }
+  // Value Value::make_string(string s) {
+  //   Value v { STRING };
+  //   std::cout << "about to assign to union" << std::endl;
+  //   v.content.string = s;
+  //   return v;
+  // }
 
 }
 
@@ -55,7 +55,11 @@ int main() {
   // cout << "size of str: " << sizeof(str) << endl;
   // cout << "value of str: " << str.content.string << endl;
 
-  auto str2 = Value(string("another string"));
+  auto str2 = Value(alloc, string("another string"));
   cout << "size of str2: " << sizeof(str2) << endl;
-  cout << "value of str2: " << str2.content.string << endl;
+  cout << "value of str2: " << string(str2.content.string) << endl;
+
+  auto vect = Value(alloc, {val, num, str2});
+  cout << "value of vect: " << string(vect.content.vector) << endl;
+
 }
