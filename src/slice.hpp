@@ -12,6 +12,11 @@ namespace Vole {
 
   using std::size_t;
 
+  struct Value;
+  template <typename T> struct Slice;
+  using String = Slice<char>;
+  using Vector = Slice<Value>;
+
   template <typename T>
   struct Slice {
     T*     mem;
@@ -35,6 +40,11 @@ namespace Vole {
       cap(len)
     { std::copy(l.begin(), l.end(), beg); }
 
+    template <typename Allocator>
+    Slice(Allocator& a, const char* str)
+    : Slice(a, std::strlen(str), std::strlen(str))
+    { }
+
     Slice(T* m, T* b, size_t l, size_t c)
     : mem(m),
       beg(b),
@@ -42,6 +52,9 @@ namespace Vole {
       cap(c)
     { }
     // We'll also use the default copy constructors and assignment operators.
+
+    T* begin() { return beg; }
+    T* end()   { return beg + len; }
 
     T& operator[](size_t i) {
       if (!(i < len)) {
@@ -84,11 +97,7 @@ namespace Vole {
 
     operator std::string() {
       std::stringstream ss;
-      ss << '(';
-      for (size_t i = 0; i < len; ++i) {
-        ss << (i ? " " : "") << beg[i];
-      }
-      ss << ')';
+      ss << (*this);
       return ss.str();
     }
 
@@ -99,14 +108,12 @@ namespace Vole {
     }
   };
 
-  template<>
-  Slice<const char>::operator std::string() {
-    return std::string(beg, len);
-  }
-
-  template<>
-  Slice<char>::operator std::string() {
-    return std::string(beg, len);
+  template <>  
+  template <typename Allocator>
+  Slice<char>::Slice(Allocator& a, const char* str) {
+    len = cap = std::strlen(str);
+    beg = mem = a.template alloc<char>(cap);
+    std::copy(str, str + len, mem);
   }
 
   template <typename T>
@@ -178,6 +185,27 @@ namespace Vole {
     auto result = Slice<char>(alloc, str.size(), str.size());
     std::copy(str.begin(), str.end(), result.beg);
     return result;
+  }
+
+  template <typename IOS, typename T>
+  IOS& operator<<(IOS& ios, Slice<T> s) {
+    ios << '(';
+    for (size_t i = 0; i < s.len; ++i) {
+      ios << (i ? " " : "") << s[i];
+    }
+    ios << ')';
+    return ios;
+  }
+
+  template <typename IOS>
+  IOS& operator<<(IOS& ios, Slice<char> s) {
+    for (char c : s) ios << c;
+    return ios;
+  }
+
+  template<>
+  Slice<char>::operator std::string() {
+    return std::string(beg, len);
   }
 
 }
