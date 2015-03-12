@@ -14,4 +14,10 @@ int main() {
   auto serialized = string(strval);
   cout << "serialized: " << serialized << endl;
 
+  auto thing1 = Value(String(alloc, "hey"));
+  auto thing2 = Value(3.14);
+  auto thing3 = Value(String(alloc, "hoo"));
+  auto things = Value(Vector(alloc, { thing1, thing2, thing3 }));
+  cout << "things: " << things << endl;
+
 }
