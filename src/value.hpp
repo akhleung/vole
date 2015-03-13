@@ -54,7 +54,7 @@ namespace Vole {
       std::stringstream ss;
       switch (type) {
         case BOOLEAN: {
-          ss << content.boolean;
+          ss << (content.boolean ? "#t" : "#f");
         } break;
         case NUMBER: {
           ss << content.number;
@@ -94,7 +94,7 @@ namespace Vole {
   IOS& operator<<(IOS& ios, Value val) {
     switch (val.type) {
       case Value::BOOLEAN: {
-        ios << val.content.boolean;
+        ios << (val.content.boolean ? "#t" : "#f");
       } break;
       case Value::NUMBER: {
         ios << val.content.number;
