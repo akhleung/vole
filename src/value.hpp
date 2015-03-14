@@ -50,24 +50,10 @@ namespace Vole {
     : type(BOOLEAN), color(c), content(true)
     { }
 
-    operator std::string() {
-      std::stringstream ss;
-      switch (type) {
-        case BOOLEAN: {
-          ss << (content.boolean ? "#t" : "#f");
-        } break;
-        case NUMBER: {
-          ss << content.number;
-        } break;
-        case STRING: {
-          ss << content.string;
-        } break;
-        case VECTOR: {
-          ss << content.vector;
-        } break;
-      }
-      return ss.str();
-    }
+    template <typename IOS>
+    IOS& serialize(IOS& ios);
+
+    operator std::string();
   };
 
   template <>
@@ -91,22 +77,33 @@ namespace Vole {
   { }
 
   template <typename IOS>
-  IOS& operator<<(IOS& ios, Value val) {
-    switch (val.type) {
-      case Value::BOOLEAN: {
-        ios << (val.content.boolean ? "#t" : "#f");
+  IOS& Value::serialize(IOS& ios) {
+    switch (type) {
+      case BOOLEAN: {
+        ios << (content.boolean ? "#t" : "#f");
       } break;
-      case Value::NUMBER: {
-        ios << val.content.number;
+      case NUMBER: {
+        ios << content.number;
       } break;
-      case Value::STRING: {
-        ios << val.content.string;
+      case STRING: {
+        ios << content.string;
       } break;
-      case Value::VECTOR: {
-        ios << val.content.vector;
+      case VECTOR: {
+        ios << content.vector;
       } break;
     }
     return ios;
+  }
+
+  template <typename IOS>
+  IOS& operator<<(IOS& ios, Value val) {
+    return val.serialize(ios);
+  }
+
+  Value::operator std::string() {
+    std::stringstream ss;
+    serialize(ss);
+    return ss.str();
   }
 
 }
