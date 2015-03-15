@@ -2,7 +2,7 @@
 #include "../src/value.hpp"
 #include "../src/allocator.hpp"
 #include "../src/symbol.hpp"
-// #include "../src/symbol_table.hpp"
+#include "../src/symbol_table.hpp"
 #include <iostream>
 #include <functional>
 
@@ -41,7 +41,7 @@ int main() {
 
   cout << square_def << endl;
 
-  // auto st = Symbol_Table();
+  auto st = Symbol_Table();
 
   // (def (factorial n)
   //   (if (= n 0)
