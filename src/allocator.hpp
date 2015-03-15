@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <forward_list>
+#include <iostream>
 #include "slice.hpp"
 #include "value.hpp"
 
@@ -15,10 +16,18 @@ namespace Vole {
   public:
 
     template <typename T>
-    T* alloc(size_t size);
+    T* alloc(size_t size, char color = 'b');
 
     ~Allocator() {
+      std::cout << std::endl << "DELETING ALL ALLOCATIONS:" << std::endl;
       for (auto val : objects) {
+        if (val.type == Value::STRING) {
+          std::cout << '[' << *val.content.string.mem << "] ";
+          std::cout << val.content.string.tail() << std::endl;
+        } else if (val.type == Value::VECTOR) {
+          std::cout << *val.content.vector.mem << ' ';
+          std::cout << val.content.vector.tail() << std::endl;
+        }
         switch (val.type) {
           case Value::STRING:
             delete val.content.string.mem;
@@ -35,17 +44,21 @@ namespace Vole {
   };
 
   template <>
-  char* Allocator::alloc(size_t size) {
+  char* Allocator::alloc(size_t size, char color) {
+    ++size;
     char* mem = new char[size];
     objects.push_front(Value(String(mem, mem, size, size)));
-    return mem;
+    *mem = color;
+    return mem + 1;
   }
 
   template <>
-  Value* Allocator::alloc(size_t size) {
+  Value* Allocator::alloc(size_t size, char color) {
+    ++size;
     Value* mem = new Value[size];
     objects.push_front(Value(Vector(mem, mem, size, size)));
-    return mem;
+    *mem = Value(color);
+    return mem + 1;
   }
 
 }

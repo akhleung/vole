@@ -17,7 +17,8 @@ namespace Vole {
       STRING,
       // REGEXP,
       VECTOR,
-      // MAPPING
+      // MAPPING,
+      COLOR // for garbage collection; expected values are 'b', 'g', and 'w'
     } type;
 
     union Content {
@@ -29,6 +30,7 @@ namespace Vole {
       // Regexp regexp;
       Vector  vector;
       // Mapping mapping;
+      char    color;
 
       Content()                       { }
       Content(bool b)    : boolean(b) { }
@@ -38,6 +40,7 @@ namespace Vole {
       // Content(Regexp r)  : regexp(r)  { }
       Content(Vector v)  : vector(v)  { }
       // Content(Mapping m) : mapping(m) { }
+      Content(char c)    : color(c)   { }
     } content;
 
     Value() { }
@@ -76,6 +79,11 @@ namespace Vole {
   : type(VECTOR), content(v)
   { }
 
+  template <>
+  Value::Value(char c)
+  : type(COLOR), content(c)
+  { }
+
   template <typename IOS>
   IOS& Value::serialize(IOS& ios) {
     switch (type) {
@@ -90,6 +98,11 @@ namespace Vole {
       } break;
       case VECTOR: {
         ios << content.vector;
+      } break;
+      case COLOR: {
+        ios << '[';
+        ios << content.color;
+        ios << ']';
       } break;
     }
     return ios;
