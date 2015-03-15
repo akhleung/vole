@@ -33,8 +33,10 @@ namespace Vole {
       Content()                       { }
       Content(bool b)    : boolean(b) { }
       Content(double d)  : number(d)  { }
+      // Content(Symbol s)  : symbol(s)  { }
       Content(String s)  : string(s)  { }
       Content(Vector v)  : vector(v)  { }
+      // Content(Mapping m) : mapping(m) { }
     } content;
 
     Value() { }
