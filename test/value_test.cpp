@@ -42,7 +42,23 @@ int main() {
   //   (if (= n 0)
   //       1
   //       (* n (factorial (- n 1)))))
+  auto factorial = Value(String(alloc, "factorial"));
+  auto n = Value(String(alloc, "n"));
+  auto iff = Value(String(alloc, "if"));
+  auto equal = Value(String(alloc, "="));
+  auto zero = Value(String(alloc, "0"));
+  auto one = Value(String(alloc, "1"));
+  auto minus = Value(String(alloc, "-"));
 
+  auto fact_sig = Value(Vector(alloc, { factorial, n }));
+  auto cond = Value(Vector(alloc, { equal, n, zero }));
+  auto args = Value(Vector(alloc, { minus, n, one }));
+  auto recur = Value(Vector(alloc, {factorial, args}));
+  auto alt = Value(Vector(alloc, { mul, n, recur }));
+  auto fact_body = Value(Vector(alloc, { iff, cond, one, alt }));
+  auto fact_def = Value(Vector(alloc, { def, fact_sig, fact_body }));
+
+  cout << fact_def << endl;
 
 }
 
