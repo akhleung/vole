@@ -20,13 +20,6 @@ namespace Vole {
       // MAPPING
     } type;
 
-    // for garbage collection
-    enum Color {
-      BLACK,
-      GRAY,
-      WHITE
-    } color;
-
     union Content {
       bool    boolean;
       double  number;
