@@ -43,7 +43,7 @@ namespace Vole {
     Value() { }
 
     template <typename T>
-    Value(T thing, Color c = BLACK);
+    Value(T thing);
 
     template <typename IOS>
     IOS& serialize(IOS& ios);
@@ -52,23 +52,23 @@ namespace Vole {
   };
 
   template <>
-  Value::Value(bool b, Color c)
-  : type(BOOLEAN), color(c), content(b)
+  Value::Value(bool b)
+  : type(BOOLEAN), content(b)
   { }
 
   template <>
-  Value::Value(double d, Color c)
-  : type(NUMBER), color(c), content(d)
+  Value::Value(double d)
+  : type(NUMBER), content(d)
   { }
 
   template <>
-  Value::Value(String s, Color c)
-  : type(STRING), color(c), content(s)
+  Value::Value(String s)
+  : type(STRING), content(s)
   { }
 
   template <>
-  Value::Value(Vector v, Color c)
-  : type(VECTOR), color(c), content(v)
+  Value::Value(Vector v)
+  : type(VECTOR), content(v)
   { }
 
   template <typename IOS>
