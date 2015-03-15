@@ -35,6 +35,7 @@ namespace Vole {
       Content(double d)  : number(d)  { }
       // Content(Symbol s)  : symbol(s)  { }
       Content(String s)  : string(s)  { }
+      // Content(Regexp r)  : regexp(r)  { }
       Content(Vector v)  : vector(v)  { }
       // Content(Mapping m) : mapping(m) { }
     } content;
