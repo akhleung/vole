@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../src/slice.hpp"
-#include "../src/allocator.hpp"
+// #include "../src/allocator.hpp"
 
 using namespace std;
 using namespace Vole;
@@ -18,8 +18,8 @@ using Strs = Slice<const char*>;
 using Ints = Slice<int>;
 
 int main() {
-  // auto alloc = New();
-  auto alloc = Allocator();
+  auto alloc = New();
+  // auto alloc = Allocator();
 
   auto empty = Strs(alloc, 0, 0);
   cout << "empty slice: " << string(empty) << endl;
