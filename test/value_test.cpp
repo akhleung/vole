@@ -47,8 +47,8 @@ int main() {
   auto n = Value(String(alloc, "n"));
   auto iff = Value(String(alloc, "if"));
   auto equal = Value(String(alloc, "="));
-  auto zero = Value(String(alloc, "0"));
-  auto one = Value(String(alloc, "1"));
+  auto zero = Value(0);
+  auto one = Value(1);
   auto minus = Value(String(alloc, "-"));
 
   auto fact_sig = Value(Vector(alloc, { factorial, n }));

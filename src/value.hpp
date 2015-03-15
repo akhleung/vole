@@ -57,6 +57,11 @@ namespace Vole {
   { }
 
   template <>
+  Value::Value(int i)
+  : type(NUMBER), content(static_cast<double>(i))
+  { }
+
+  template <>
   Value::Value(double d)
   : type(NUMBER), content(d)
   { }
