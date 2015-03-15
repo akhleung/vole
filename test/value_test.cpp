@@ -1,6 +1,8 @@
 #include "../src/slice.hpp"
 #include "../src/value.hpp"
 #include "../src/allocator.hpp"
+#include "../src/symbol.hpp"
+// #include "../src/symbol_table.hpp"
 #include <iostream>
 #include <functional>
 
@@ -39,11 +41,14 @@ int main() {
 
   cout << square_def << endl;
 
+  // auto st = Symbol_Table();
+
   // (def (factorial n)
   //   (if (= n 0)
   //       1
   //       (* n (factorial (- n 1)))))
-  auto factorial = Value(String(alloc, "factorial"));
+  // auto factorial = Value(String(alloc, "factorial"));
+  auto factorial = Value(Symbol(String(alloc, "factorial")));
   auto n = Value(String(alloc, "n"));
   auto iff = Value(String(alloc, "if"));
   auto equal = Value(String(alloc, "="));

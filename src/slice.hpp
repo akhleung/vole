@@ -45,6 +45,11 @@ namespace Vole {
     : Slice(a, std::strlen(str), std::strlen(str))
     { }
 
+    template <typename Allocator>
+    Slice(Allocator& a, std::string str)
+    : Slice(a, str.c_str())
+    { }
+
     Slice(T* m, T* b, size_t l, size_t c)
     : mem(m),
       beg(b),

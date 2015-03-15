@@ -2,6 +2,7 @@
 #define VOLE_VALUE
 
 #include "slice.hpp"
+#include "symbol.hpp"
 
 namespace Vole {
 
@@ -13,7 +14,7 @@ namespace Vole {
     enum Type {
       BOOLEAN,
       NUMBER,
-      // SYMBOL,
+      SYMBOL,
       STRING,
       // REGEXP,
       VECTOR,
@@ -25,7 +26,7 @@ namespace Vole {
       bool    boolean;
       double  number;
       // wrapper around a String, every symbol with a name is unique
-      // Symbol  symbol;
+      Symbol  symbol;
       String  string;
       // Regexp regexp;
       Vector  vector;
@@ -35,7 +36,7 @@ namespace Vole {
       Content()                       { }
       Content(bool b)    : boolean(b) { }
       Content(double d)  : number(d)  { }
-      // Content(Symbol s)  : symbol(s)  { }
+      Content(Symbol s)  : symbol(s)  { }
       Content(String s)  : string(s)  { }
       // Content(Regexp r)  : regexp(r)  { }
       Content(Vector v)  : vector(v)  { }
@@ -70,6 +71,11 @@ namespace Vole {
   { }
 
   template <>
+  Value::Value(Symbol s)
+  : type(SYMBOL), content(s)
+  { }
+
+  template <>
   Value::Value(String s)
   : type(STRING), content(s)
   { }
@@ -92,6 +98,9 @@ namespace Vole {
       } break;
       case NUMBER: {
         ios << content.number;
+      } break;
+      case SYMBOL: {
+        ios << content.symbol.val;
       } break;
       case STRING: {
         ios << content.string;
