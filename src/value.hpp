@@ -37,18 +37,19 @@ namespace Vole {
       Vector  vector;
       // Mapping mapping;
 
+      Content()                       { }
       Content(bool b)    : boolean(b) { }
       Content(double d)  : number(d)  { }
-      // Content(Symbol s) { new (&symbol) Symbol(s); }
-      Content(String s)  { new (&string) String(s); }
-      Content(Vector v)  { new (&vector) Vector(v); }
+      // Content(Symbol s)  { new (&symbol) Symbol(s); }
+      Content(String s)  : string(s)  { }
+      Content(Vector v)  : vector(v)  { }
       // Content(Mapping m) { new (&mapping) Mapping(m); }
     } content;
 
+    Value() { }
+
     template <typename T>
-    Value(T thing, Color c = BLACK)
-    : type(BOOLEAN), color(c), content(true)
-    { }
+    Value(T thing, Color c = BLACK);
 
     template <typename IOS>
     IOS& serialize(IOS& ios);

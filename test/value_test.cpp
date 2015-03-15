@@ -2,6 +2,7 @@
 #include "../src/value.hpp"
 #include "../src/allocator.hpp"
 #include <iostream>
+#include <functional>
 
 using namespace std;
 using namespace Vole;
@@ -43,6 +44,10 @@ int main() {
   //       1
   //       (* n (factorial (- n 1)))))
 
+  // hash<Value> val_hash;
+  // cout << val_hash(square_def) << endl;
+  // cout << val_hash(square_def) == val_hash(def) << endl;
+  // cout << val_hash(x) == val_hash(x) << endl;
 
 }
 
