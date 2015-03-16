@@ -48,7 +48,8 @@ int main() {
   //       1
   //       (* n (factorial (- n 1)))))
   // auto factorial = Value(String(alloc, "factorial"));
-  auto factorial = Value(Symbol(String(alloc, "factorial")));
+  auto fact_sym = st.intern_string(alloc, "factorial");
+  auto factorial = Value(fact_sym);
   auto n = Value(String(alloc, "n"));
   auto iff = Value(String(alloc, "if"));
   auto equal = Value(String(alloc, "="));

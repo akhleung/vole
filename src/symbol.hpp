@@ -13,7 +13,7 @@ namespace Vole {
   struct Symbol {
     String val;
 
-    // Symbol()  { }
+    Symbol()  { }
     Symbol(String s) : val(s) { }
   };
 

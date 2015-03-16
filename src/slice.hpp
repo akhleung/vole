@@ -24,6 +24,8 @@ namespace Vole {
     size_t len;
     size_t cap;
 
+    Slice() : mem(nullptr), beg(mem), len(0), cap(0) { }
+
     template <typename Allocator>
     Slice(Allocator& a, size_t l, size_t c)
     : mem(a.template alloc<T>(c)),
