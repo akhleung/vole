@@ -2,7 +2,6 @@
 #include "../src/value.hpp"
 #include "../src/allocator.hpp"
 #include "../src/symbol.hpp"
-#include "../src/symbol_table.hpp"
 #include <iostream>
 #include <functional>
 
@@ -10,7 +9,7 @@ using namespace std;
 using namespace Vole;
 
 int main() {
-  auto alloc = Allocator();
+  auto alloc = Vole::Allocator();
   auto strval = Value(slice_from_string(alloc, "a string slice"));
   cout << "fetching out the slice: " << string(strval.content.string) << endl;
   cout << "outputting directly: " << strval << endl;
@@ -48,7 +47,7 @@ int main() {
   //       1
   //       (* n (factorial (- n 1)))))
   // auto factorial = Value(String(alloc, "factorial"));
-  auto fact_sym = st.intern_string(alloc, "factorial");
+  auto fact_sym = st.intern(alloc, "factorial");
   auto factorial = Value(fact_sym);
   auto n = Value(String(alloc, "n"));
   auto iff = Value(String(alloc, "if"));

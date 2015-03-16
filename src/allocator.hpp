@@ -1,7 +1,6 @@
 #ifndef VOLE_ALLOCATOR
 #define VOLE_ALLOCATOR
 
-#include <cstdlib>
 #include <forward_list>
 #include <iostream>
 #include "slice.hpp"
