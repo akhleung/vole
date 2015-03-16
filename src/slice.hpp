@@ -43,9 +43,11 @@ namespace Vole {
     { std::copy(l.begin(), l.end(), beg); }
 
     template <typename Allocator>
-    Slice(Allocator& a, const char* str)
-    : Slice(a, std::strlen(str), std::strlen(str))
-    { }
+    Slice(Allocator& a, const char* str) {
+      len = cap = std::strlen(str);
+      beg = mem = a.template alloc<char>(cap);
+      std::copy(str, str + len, mem);
+    }
 
     template <typename Allocator>
     Slice(Allocator& a, std::string str)
@@ -108,11 +110,6 @@ namespace Vole {
       return ss.str();
     }
 
-    std::string debug() {
-      std::stringstream out;
-      out << "len: " << len << ", cap: " << cap;
-      return out.str();
-    }
   };
 
   template <>  
@@ -170,28 +167,6 @@ namespace Vole {
       std::copy(l.begin(), l.end(), s.beg + s.len);
       return { s.mem, s.beg, s.len + l.size(), s.cap };
     }
-  }
-
-  template <typename Allocator>
-  Slice<char> slice_from_string(Allocator& alloc, const char* str, size_t n) {
-    auto result = Slice<char>(alloc, n, n);
-    std::copy(str, str + n, result.beg);
-    return result;
-  }
-
-  template <typename Allocator>
-  Slice<char> slice_from_string(Allocator& alloc, const char* str) {
-    auto n = std::strlen(str);
-    auto result = Slice<char>(alloc, n, n);
-    std::copy(str, str + n, result.beg);
-    return result;
-  }
-
-  template <typename Allocator>
-  Slice<char> slice_from_string(Allocator& alloc, std::string str) {
-    auto result = Slice<char>(alloc, str.size(), str.size());
-    std::copy(str.begin(), str.end(), result.beg);
-    return result;
   }
 
   template <typename IOS, typename T>

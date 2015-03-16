@@ -10,7 +10,7 @@ using namespace Vole;
 
 int main() {
   auto alloc = Vole::Allocator();
-  auto strval = Value(slice_from_string(alloc, "a string slice"));
+  auto strval = Value(String(alloc, "a string slice"));
   cout << "fetching out the slice: " << string(strval.content.string) << endl;
   cout << "outputting directly: " << strval << endl;
   auto serialized = string(strval);
