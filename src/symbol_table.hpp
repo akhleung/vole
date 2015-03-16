@@ -17,15 +17,13 @@ namespace Vole {
 
   template <typename Allocator>
   Symbol Symbol_Table::intern_string(Allocator& alloc, std::string key) {
-    auto sym = symbols.find(key);
-    Symbol val;
-    if ( sym == symbols.end() ) {
-      val = Symbol(String(alloc, key));
-      symbols[key] = val;
+    if (symbols.count(key)) {
+      return symbols[key];
     } else {
-      val = symbols[key];
+      auto val = Symbol(String(alloc, key));
+      symbols[key] = val;
+      return val;
     }
-    return val;
   }
 }
 
