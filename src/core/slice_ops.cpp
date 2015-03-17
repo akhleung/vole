@@ -1,4 +1,6 @@
 #include "slice_ops.hpp"
+#include "allocator.hpp"
+#include <algorithm>
 
 namespace Vole {
 
@@ -12,7 +14,7 @@ namespace Vole {
     }
   }
 
-  template <typename T, typename Allocator>
+  template <typename T>
   Slice<T> append(Allocator& alloc, Slice<T> s, T t) {
     if (s.len < s.cap) {
       s.beg[s.len] = t;
@@ -25,7 +27,7 @@ namespace Vole {
     }
   }
 
-  template <typename T, typename Allocator>
+  template <typename T>
   Slice<T> append(Allocator& alloc, Slice<T> s1, Slice<T> s2) {
     if (s1.len + s2.len > s1.cap) {
       Slice<T> dest { alloc, s1.len + s2.len, s1.len + s2.len };
@@ -38,7 +40,7 @@ namespace Vole {
     }
   }
 
-  template <typename T, typename Allocator>
+  template <typename T>
   Slice<T> append(Allocator& alloc, Slice<T> s, std::initializer_list<T> l) {
     if (s.len + l.size() > s.cap) {
       Slice<T> dest { alloc, s.len + l.size(), s.len + l.size() };
