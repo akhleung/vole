@@ -1,5 +1,5 @@
-#include "slice_ops.hpp"
 #include "allocator.hpp"
+#include "slice_ops.hpp"
 #include <algorithm>
 
 namespace Vole {

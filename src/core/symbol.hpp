@@ -1,8 +1,8 @@
 #ifndef VOLE_SYMBOL
 #define VOLE_SYMBOL
 
-#include "slice.hpp"
 #include "allocator.hpp"
+#include "slice.hpp"
 #include <unordered_map>
 
 namespace Vole {
