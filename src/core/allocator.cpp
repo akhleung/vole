@@ -6,17 +6,17 @@ namespace Vole {
   Allocator::Handle::Object::Object(char* ptr) : char_ptr(ptr) { }
   Allocator::Handle::Object::Object(Value* ptr) : value_ptr(ptr) { }
 
-  Allocator::Handle::Handle(Type t, char* ptr)
-  : type(t), object(ptr)
+  Allocator::Handle::Handle(Type t, char* ptr, size_t s)
+  : type(t), object(ptr), size(s)
   { }
-  Allocator::Handle::Handle(Type t, Value* ptr)
-  : type(t), object(ptr)
+  Allocator::Handle::Handle(Type t, Value* ptr, size_t s)
+  : type(t), object(ptr), size(s)
   { }
 
   char* Allocator::alloc_string(size_t size, char color) {
     ++size;
     char* mem = new char[size];
-    handles.push_front(Handle(Handle::CHAR, mem));
+    handles.push_front(Handle(Handle::CHAR, mem, size));
     *mem = color;
     return mem + 1;
   }
@@ -24,7 +24,7 @@ namespace Vole {
   Value* Allocator::alloc_vector(size_t size, char color) {
     ++size;
     Value* mem = new Value[size];
-    handles.push_front(Handle(Handle::VALUE, mem));
+    handles.push_front(Handle(Handle::VALUE, mem, size));
     *mem = Value(color);
     return mem + 1;
   }
