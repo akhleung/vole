@@ -1,7 +1,6 @@
 #ifndef VOLE_ALLOCATOR
 #define VOLE_ALLOCATOR
 
-#include <utility>
 #include <forward_list>
 
 namespace Vole {
