@@ -44,6 +44,7 @@ namespace Vole {
     T&       last()              { return (*this)[len-1]; }
     T&       head()              { return first(); }
     Slice<T> tail()              { return slice(1, len); }
+    Slice<T> rest()              { return tail(); }
     Slice<T> take(std::size_t n) { return slice(0, n); }
     Slice<T> drop(std::size_t n) { return slice(n, len); }
     Slice<T> take_half()         { return take(len / 2); }

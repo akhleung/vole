@@ -12,9 +12,9 @@ namespace Vole {
   string print(Vector vec) {
     stringstream ss;
     ss << '(';
-    for (size_t i = 0; i < vec.len; ++i) {
-      if (i) ss << ' ';
-      ss << print(vec[i]);
+    if (vec.len) {
+      ss << print(vec.head());
+      for (auto val : vec.tail()) ss << ' ' << print(val);
     }
     ss << ')';
     return ss.str();
