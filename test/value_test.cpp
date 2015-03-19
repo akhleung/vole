@@ -1,7 +1,10 @@
-#include "../src/slice.hpp"
-#include "../src/value.hpp"
-#include "../src/allocator.hpp"
-#include "../src/symbol.hpp"
+// #include "../src/slice.hpp"
+// #include "../src/value.hpp"
+// #include "../src/allocator.hpp"
+// #include "../src/symbol.hpp"
+
+#include "../src/context.hpp"
+#include "../src/print.hpp"
 #include <iostream>
 #include <functional>
 
@@ -9,62 +12,57 @@ using namespace std;
 using namespace Vole;
 
 int main() {
-  auto alloc = Vole::Allocator();
-  auto strval = Value(String(alloc, "a string slice"));
-  cout << "fetching out the slice: " << string(strval.content.string) << endl;
-  cout << "outputting directly: " << strval << endl;
-  auto serialized = string(strval);
-  cout << "serialized: " << serialized << endl;
+  auto ctx = Context();
 
-  auto thing1 = Value(String(alloc, "hey"));
-  auto thing2 = Value(3.14);
-  auto thing3 = Value(String(alloc, "hoo"));
-  auto things = Value(Vector(alloc, { thing1, thing2, thing3 }));
-  cout << "things: " << things << endl;
+  auto hello = ctx.new_string("hello");
+  auto world = ctx.new_string("world");
+  vector<Value> vec = { hello, world };
+  auto greet = ctx.new_vector(vec);
 
-  auto boolval = Value(true);
-  auto numval = Value(2.78);
-  strval = Value(String(alloc, "a string"));
-  auto values = Value(Vector(alloc, { boolval, numval, strval }));
-  cout << "values: " << values << endl;
+  cout << print(greet) << endl;
+
+  auto pi = ctx.new_number(3.14);
+  auto me = ctx.new_string("Aaron");
+  auto tr = ctx.new_boolean(true);
+  auto lst = { pi, me, greet, tr };
+  auto stuff = ctx.new_vector(lst);
+
+  cout << print(stuff) << endl;
 
   // (def (square x) (* x x))
-  auto def = Value(String(alloc, "def"));
-  auto square = Value(String(alloc, "square"));
-  auto x = Value(String(alloc, "x"));
-  auto mul = Value(String(alloc, "*"));
+  auto def = ctx.new_symbol("def");
+  auto square = ctx.new_symbol("square");
+  auto x = ctx.new_symbol("x");
+  auto mul = ctx.new_symbol("*");
 
-  auto sig = Value(Vector(alloc, { square, x }));
-  auto body = Value(Vector(alloc, { mul, x, x }));
-  auto square_def = Value(Vector(alloc, { def, sig, body }));
+  auto sig = ctx.new_vector({ square, x });
+  auto body = ctx.new_vector({ mul, x, x });
+  auto square_def = ctx.new_vector({ def, sig, body });
 
-  cout << square_def << endl;
-
-  auto st = Symbol_Table();
+  cout << print(square_def) << endl;
 
   // (def (factorial n)
   //   (if (= n 0)
   //       1
   //       (* n (factorial (- n 1)))))
   // auto factorial = Value(String(alloc, "factorial"));
-  auto fact_sym = st.intern(alloc, "factorial");
-  auto factorial = Value(fact_sym);
-  auto n = Value(String(alloc, "n"));
-  auto iff = Value(String(alloc, "if"));
-  auto equal = Value(String(alloc, "="));
-  auto zero = Value(0);
-  auto one = Value(1);
-  auto minus = Value(String(alloc, "-"));
+  auto factorial = ctx.new_symbol("factorial");
+  auto n = ctx.new_symbol("n");
+  auto iff = ctx.new_symbol("if");
+  auto equal = ctx.new_symbol("=");
+  auto zero = ctx.new_number(0);
+  auto one = ctx.new_number(1);
+  auto minus = ctx.new_symbol("-");
 
-  auto fact_sig = Value(Vector(alloc, { factorial, n }));
-  auto cond = Value(Vector(alloc, { equal, n, zero }));
-  auto args = Value(Vector(alloc, { minus, n, one }));
-  auto recur = Value(Vector(alloc, {factorial, args}));
-  auto alt = Value(Vector(alloc, { mul, n, recur }));
-  auto fact_body = Value(Vector(alloc, { iff, cond, one, alt }));
-  auto fact_def = Value(Vector(alloc, { def, fact_sig, fact_body }));
+  auto fact_sig = ctx.new_vector({ factorial, n });
+  auto cond = ctx.new_vector({ equal, n, zero });
+  auto args = ctx.new_vector({ minus, n, one });
+  auto recur = ctx.new_vector({ factorial, args });
+  auto alt = ctx.new_vector({ mul, n, recur });
+  auto fact_body = ctx.new_vector({ iff, cond, one, alt });
+  auto fact_def = ctx.new_vector({ def, fact_sig, fact_body });
 
-  cout << fact_def << endl;
+  cout << print(fact_def) << endl;
 
 }
 
