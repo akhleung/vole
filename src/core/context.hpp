@@ -5,6 +5,7 @@
 #include "symbol.hpp"
 #include "value.hpp"
 #include <string>
+#include <vector>
 
 namespace Vole {
 
@@ -16,6 +17,7 @@ namespace Vole {
     Value new_symbol(std::string name);
     Value new_string(std::string str);
     Value new_vector(size_t cap);
+    Value new_vector(std::vector<Value>& vec);
   private:
     Allocator allocator;
     Symbol_Table symbol_table;
