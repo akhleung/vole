@@ -13,7 +13,8 @@ namespace Vole {
     stringstream ss;
     ss << '(';
     for (size_t i = 0; i < vec.len; ++i) {
-      ss << (i ? "" : " ") << print(vec[i]);
+      if (i) ss << ' ';
+      ss << print(vec[i]);
     }
     ss << ')';
     return ss.str();
