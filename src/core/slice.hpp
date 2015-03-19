@@ -1,6 +1,7 @@
 #ifndef VOLE_SLICE
 #define VOLE_SLICE
 
+#include <algorithm>
 #include <cstddef>
 
 namespace Vole {
@@ -63,6 +64,16 @@ namespace Vole {
     }
 
   };
+
+  template <typename T>
+  void copy(Slice<T> src, Slice<T> dst) {
+    size_t len = std::min(src.len, dst.len);
+    if (src.beg < dst.beg && dst.beg < src.beg + len) {
+      std::copy_backward(src.beg, src.beg + len, dst.beg + len);
+    } else {
+      std::copy(src.beg, src.beg + len, dst.beg);
+    }
+  }
 
 }
 

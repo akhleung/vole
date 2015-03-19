@@ -1,5 +1,6 @@
 #include "symbol.hpp"
 #include "allocator.hpp"
+#include <algorithm>
 
 namespace Vole {
 
@@ -9,18 +10,17 @@ namespace Vole {
   Symbol::Symbol(String s) : name(s) { }
 
   Symbol_Table::Symbol_Table() { }
-  Symbol Symbol_Table::intern(Allocator& alloc, std::string name) {
+  Symbol Symbol_Table::intern(Allocator& A, std::string name) {
     if (symbols.count(name)) {
       return symbols[name];
     } else {
       auto len = name.length();
-      auto mem = alloc.alloc_string(len);
-      auto val = Symbol(String(mem, mem, len, len));
-      // TODO: copy the chars too
-      symbols[name] = val;
-      return val;
+      auto mem = A.alloc_string(len);
+      copy(name.begin(), name.end(), mem);
+      auto sym = Symbol(String(mem, mem, len, len));
+      symbols[name] = sym;
+      return sym;
     }
   }
-
 
 }
