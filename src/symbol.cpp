@@ -10,7 +10,7 @@ namespace Vole {
   Symbol::Symbol(String s) : name(s) { }
 
   Symbol_Table::Symbol_Table() { }
-  Symbol Symbol_Table::intern(Allocator& A, std::string name) {
+  Symbol Symbol_Table::intern(Allocator& A, const std::string& name) {
     if (symbols.count(name)) {
       return symbols[name];
     } else {

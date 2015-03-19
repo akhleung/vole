@@ -22,7 +22,7 @@ namespace Vole {
     std::unordered_map<std::string, Symbol> symbols;
   public:
     Symbol_Table();
-    Symbol intern(Allocator& alloc, std::string name);
+    Symbol intern(Allocator& alloc, const std::string& name);
   };
 
 }

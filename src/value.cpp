@@ -10,6 +10,7 @@ namespace Vole {
   Value::Content::Content(Vector v) : vector(v)  { }
   Value::Content::Content(char c)   : color(c)   { }
 
+  Value::Value()                                     { }
   Value::Value(bool b)   : type(BOOLEAN), content(b) { }
   Value::Value(double d) : type(NUMBER),  content(d) { }
   Value::Value(Symbol s) : type(SYMBOL),  content(s) { }
