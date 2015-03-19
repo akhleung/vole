@@ -2,63 +2,41 @@
 #define VOLE_ALLOCATOR
 
 #include <forward_list>
-#include <iostream>
-#include "slice.hpp"
-#include "value.hpp"
 
 namespace Vole {
 
+  struct Value;
+
   class Allocator {
 
-    std::forward_list<Value> objects;
+    struct Handle {
+      enum Type {
+        CHAR, VALUE
+      };
+      union Object {
+        char* char_ptr;
+        Value* value_ptr;
+        Object(char*);
+        Object(Value*);
+      };
+
+      Type   type;
+      Object object;
+      size_t size;
+
+      Handle(Type t, char* ptr, size_t s);
+      Handle(Type t, Value* ptr, size_t s);
+    };
+
+    std::forward_list<Handle> handles;
 
   public:
 
-    template <typename T>
-    T* alloc(size_t size, char color = 'b');
-
-    ~Allocator() {
-      std::cout << std::endl << "DELETING ALL ALLOCATIONS:" << std::endl;
-      for (auto val : objects) {
-        if (val.type == Value::STRING) {
-          std::cout << '[' << *val.content.string.mem << "] ";
-          std::cout << val.content.string.tail() << std::endl;
-        } else if (val.type == Value::VECTOR) {
-          std::cout << *val.content.vector.mem << ' ';
-          std::cout << val.content.vector.tail() << std::endl;
-        }
-        switch (val.type) {
-          case Value::STRING:
-            delete val.content.string.mem;
-            break;
-          case Value::VECTOR:
-            delete val.content.vector.mem;
-            break;
-          default:
-            break; // don't forget the other types once they're implemented
-        }
-      }
-    }
+    char*  alloc_string(size_t size, char color = 'w');
+    Value* alloc_vector(size_t size, char color = 'w');
+    ~Allocator();
 
   };
-
-  template <>
-  char* Allocator::alloc(size_t size, char color) {
-    ++size;
-    char* mem = new char[size];
-    objects.push_front(Value(String(mem, mem, size, size)));
-    *mem = color;
-    return mem + 1;
-  }
-
-  template <>
-  Value* Allocator::alloc(size_t size, char color) {
-    ++size;
-    Value* mem = new Value[size];
-    objects.push_front(Value(Vector(mem, mem, size, size)));
-    *mem = Value(color);
-    return mem + 1;
-  }
 
 }
 

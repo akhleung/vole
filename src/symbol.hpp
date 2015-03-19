@@ -2,6 +2,7 @@
 #define VOLE_SYMBOL
 
 #include "slice.hpp"
+#include <string>
 #include <unordered_map>
 
 namespace Vole {
@@ -9,10 +10,10 @@ namespace Vole {
   using String = Slice<char>;
 
   struct Symbol {
-    String val;
+    String name;
 
-    Symbol() { }
-    Symbol(String s) : val(s) { }
+    Symbol();
+    Symbol(String s);
   };
 
   class Allocator;
@@ -20,16 +21,8 @@ namespace Vole {
   class Symbol_Table {
     std::unordered_map<std::string, Symbol> symbols;
   public:
-    Symbol_Table() { }
-    Symbol intern(Allocator& alloc, std::string name) {
-      if (symbols.count(name)) {
-        return symbols[name];
-      } else {
-        auto val = Symbol(String(alloc, name));
-        symbols[name] = val;
-        return val;
-      }
-    }
+    Symbol_Table();
+    Symbol intern(Allocator& alloc, std::string name);
   };
 
 }
