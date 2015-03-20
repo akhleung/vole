@@ -21,11 +21,18 @@ namespace Vole {
     return Value(symbol_table.intern(allocator, name));
   }
 
+  Value Context::new_gensym(const string& name) {
+    auto len = name.length();
+    auto mem = allocator.alloc_string(len);
+    std::copy(name.begin(), name.end(), mem);
+    return Value(Symbol(String(mem, len)));
+  }
+
   Value Context::new_string(const string& str) {
     auto len = str.length();
     auto mem = allocator.alloc_string(len);
     std::copy(str.begin(), str.end(), mem);
-    return Value(String(mem, mem, len, len));
+    return Value(String(mem, len));
   }
 
   Value Context::new_vector(size_t cap) {
@@ -37,14 +44,14 @@ namespace Vole {
     auto cap = lst.size();
     auto mem = allocator.alloc_vector(cap);
     std::copy(lst.begin(), lst.end(), mem);
-    return Value(Vector(mem, mem, cap, cap));
+    return Value(Vector(mem, cap));
   }
 
   Value Context::new_vector(const vector<Value>& vec) {
     auto cap = vec.size();
     auto mem = allocator.alloc_vector(cap);
     std::copy(vec.begin(), vec.end(), mem);
-    return Value(Vector(mem, mem, cap, cap));
+    return Value(Vector(mem, cap));
   }
 
 }

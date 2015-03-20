@@ -15,6 +15,7 @@ namespace Vole {
     Value new_boolean(bool b);
     Value new_number(double d);
     Value new_symbol(const std::string& name);
+    Value new_gensym(const std::string& name);
     Value new_string(const std::string& str);
     Value new_vector(size_t cap);
     Value new_vector(const std::initializer_list<Value>& lst);
