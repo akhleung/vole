@@ -17,7 +17,7 @@ namespace Vole {
       auto len = name.length();
       auto mem = A.alloc_string(len);
       copy(name.begin(), name.end(), mem);
-      auto sym = Symbol(String(mem, mem, len, len));
+      auto sym = Symbol(String(mem, len));
       symbols[name] = sym;
       return sym;
     }

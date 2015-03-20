@@ -17,6 +17,10 @@ namespace Vole {
     : mem(nullptr), beg(mem), len(0), cap(0)
     { }
 
+    Slice(T* m, std::size_t c)
+    : mem(m), beg(m), len(c), cap(c)
+    { }
+
     Slice(T* m, T* b, std::size_t l, std::size_t c)
     : mem(m), beg(b), len(l), cap(c)
     { }

@@ -19,6 +19,7 @@ namespace Vole {
       // REGEXP,
       VECTOR,
       // MAPPING,
+      // FUNCTION,
       COLOR // for garbage collection; expected values are 'b', 'g', and 'w'
     } type;
 
