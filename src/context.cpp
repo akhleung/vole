@@ -30,7 +30,7 @@ namespace Vole {
   }
 
   Value Context::new_vector(size_t cap) {
-    auto mem = allocator.alloc_vector(cap);
+    auto mem = allocator.alloc_values(cap);
     return Value(Vector(mem, mem, 0, cap));
   }
 

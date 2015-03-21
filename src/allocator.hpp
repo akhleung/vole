@@ -32,8 +32,8 @@ namespace Vole {
 
   public:
 
-    char*  alloc_string(size_t size, char color = 'w');
-    Value* alloc_vector(size_t size, char color = 'w');
+    char*  alloc_chars(size_t size, char color = 'w');
+    Value* alloc_values(size_t size, char color = 'w');
     ~Allocator();
 
   };

@@ -13,7 +13,7 @@ namespace Vole {
   : type(t), object(ptr), size(s)
   { }
 
-  char* Allocator::alloc_string(size_t size, char color) {
+  char* Allocator::alloc_chars(size_t size, char color) {
     ++size;
     char* mem = new char[size];
     handles.push_front(Handle(Handle::CHAR, mem, size));
@@ -21,7 +21,7 @@ namespace Vole {
     return mem + 1;
   }
 
-  Value* Allocator::alloc_vector(size_t size, char color) {
+  Value* Allocator::alloc_values(size_t size, char color) {
     ++size;
     Value* mem = new Value[size];
     handles.push_front(Handle(Handle::VALUE, mem, size));

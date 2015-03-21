@@ -15,7 +15,7 @@ namespace Vole {
       return { s.mem, s.beg, s.len+1, s.cap };
     } else {
       size_t cap = (s.cap ? s.cap * 2 : 1);
-      char* mem = A.alloc_string(cap);
+      char* mem = A.alloc_chars(cap);
       String dest(mem, mem, s.len + 1, cap);
       copy(s, dest);
       dest.beg[s.len] = c;
@@ -30,7 +30,7 @@ namespace Vole {
       return { s.mem, s.beg, s.len+1, s.cap };
     } else {
       size_t cap = (s.cap ? s.cap * 2 : 1);
-      Value* mem = A.alloc_vector(cap);
+      Value* mem = A.alloc_values(cap);
       Vector dest(mem, mem, s.len + 1, cap);
       copy(s, dest);
       dest.beg[s.len] = v;
@@ -42,7 +42,7 @@ namespace Vole {
   String append(Allocator& A, String s1, String s2) {
     if (s1.len + s2.len > s1.cap) {
       size_t cap = s1.len + s2.len;
-      char* mem = A.alloc_string(cap);
+      char* mem = A.alloc_chars(cap);
       String dest(mem, cap);
       copy(s1, dest.take(s1.len));
       copy(s2, dest.drop(s1.len));
@@ -57,7 +57,7 @@ namespace Vole {
   Vector append(Allocator& A, Vector s1, Vector s2) {
     if (s1.len + s2.len > s1.cap) {
       size_t cap = s1.len + s2.len;
-      Value* mem = A.alloc_vector(cap);
+      Value* mem = A.alloc_values(cap);
       Vector dest(mem, cap);
       copy(s1, dest.take(s1.len));
       copy(s2, dest.drop(s1.len));
