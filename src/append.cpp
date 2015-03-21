@@ -43,7 +43,7 @@ namespace Vole {
     if (s1.len + s2.len > s1.cap) {
       size_t cap = s1.len + s2.len;
       char* mem = A.alloc_string(cap);
-      String dest(mem, mem, cap, cap);
+      String dest(mem, cap);
       copy(s1, dest.take(s1.len));
       copy(s2, dest.drop(s1.len));
       return dest;
@@ -58,7 +58,7 @@ namespace Vole {
     if (s1.len + s2.len > s1.cap) {
       size_t cap = s1.len + s2.len;
       Value* mem = A.alloc_vector(cap);
-      Vector dest(mem, mem, cap, cap);
+      Vector dest(mem, cap);
       copy(s1, dest.take(s1.len));
       copy(s2, dest.drop(s1.len));
       return dest;

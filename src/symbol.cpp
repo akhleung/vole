@@ -14,10 +14,7 @@ namespace Vole {
     if (symbols.count(name)) {
       return symbols[name];
     } else {
-      auto len = name.length();
-      auto mem = A.alloc_string(len);
-      copy(name.begin(), name.end(), mem);
-      auto sym = Symbol(String(mem, len));
+      auto sym = Symbol(String(A, name));
       symbols[name] = sym;
       return sym;
     }

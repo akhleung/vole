@@ -6,6 +6,9 @@
 
 namespace Vole {
 
+  class Allocator;
+  class Value;
+
   template <typename T>
   struct Slice {
     T*          mem;
@@ -24,6 +27,10 @@ namespace Vole {
     Slice(T* m, T* b, std::size_t l, std::size_t c)
     : mem(m), beg(b), len(l), cap(c)
     { }
+
+    Slice(Allocator& A, const std::string& str);
+    Slice(Allocator& A, const std::initializer_list<Value>& lst);
+    Slice(Allocator& A, const std::vector<Value>& vec);
 
     T* begin() { return beg; }
     T* end()   { return beg + len; }
