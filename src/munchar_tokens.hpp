@@ -89,11 +89,17 @@ namespace Munchar {
     constexpr auto c_comment     = STR("/*") ^ *(!STR("*/") ^ _) ^ STR("*/");
     constexpr auto sh_comment    = CHR('#') ^ *(!eol ^ _) ^ ~eol;
 
-    constexpr auto lisp_true          = STR("#t");
-    constexpr auto lisp_false         = STR("#f");
-    constexpr auto lisp_id_start      = letter | underscore | hyphen;
-    constexpr auto lisp_id_body       = alphanumeric | underscore | hyphen;
-    constexpr auto lisp_identifier    = lisp_id_start^*lisp_id_body;
+
+    constexpr auto ellipsis            = STR("...");
+    constexpr auto right_arrow         = STR("->");
+    constexpr auto lisp_true           = STR("#t") | STR("#T");
+    constexpr auto lisp_false          = STR("#f") | STR("#F");
+    constexpr auto boolean             = lisp_true | lisp_false;
+    constexpr auto lisp_id_start       = letter | underscore | hyphen | exclamation | dollar | percent | ampersand | asterisk | slash | colon | less_than | eq | greater_than | question | caret | tilde;
+    constexpr auto lisp_id_body        = alphanumeric | lisp_id_start | plus | minus | dot | at;
+    constexpr auto peculiar_identifier = plus | minus | ellipsis | right_arrow^*lisp_id_body;
+    constexpr auto lisp_identifier     = lisp_id_start^*lisp_id_body | peculiar_identifier;
+
 
   }
 }

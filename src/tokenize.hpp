@@ -1,6 +1,8 @@
 #ifndef VOLE_TOKENIZE
 #define VOLE_TOKENIZE
 
+#include <vector>
+
 namespace Vole {
 
   struct Lexeme {
@@ -16,7 +18,7 @@ namespace Vole {
     Lexeme(Type t, const char* b, const char* e) : type(t), beg(b), end(e) { }
   };
 
-  vector<Lexeme>& tokenize(const char* src, vector<Lexeme>& tokens);
+  void tokenize(const char* src, std::vector<Lexeme>& tokens);
 
 }
 
