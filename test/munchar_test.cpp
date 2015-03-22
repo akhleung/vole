@@ -5,9 +5,9 @@
 #include <iostream>
 #include <sstream>
 
-#include "../src/tokenize.hpp"
+#include "../src/munchar.hpp"
+#include "../src/munchar_tokens.hpp"
 
-using namespace Vole;
 using namespace Munchar;
 using namespace Munchar::Tokens;
 

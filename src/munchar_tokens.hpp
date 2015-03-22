@@ -2,6 +2,7 @@
 #define MUNCHAR_TOKENS
 
 #include "munchar.hpp"
+#include <cctype>
 
 namespace Munchar {
   namespace Tokens {
@@ -62,11 +63,11 @@ namespace Munchar {
     constexpr auto tilde         = CHR('~');
 
     constexpr auto _             = Any_Char { };
-    constexpr auto letter        = MUNCHAR_STATIC_PREDICATE(std::isalpha);
-    constexpr auto alphanumeric  = MUNCHAR_STATIC_PREDICATE(std::isalnum);
-    constexpr auto digit         = MUNCHAR_STATIC_PREDICATE(std::isdigit);
-    constexpr auto hex_digit     = MUNCHAR_STATIC_PREDICATE(std::isxdigit);
-    constexpr auto ws_char       = MUNCHAR_STATIC_PREDICATE(std::isspace);
+    constexpr auto letter        = MUNCHAR_STATIC_PREDICATE(::isalpha);
+    constexpr auto alphanumeric  = MUNCHAR_STATIC_PREDICATE(::isalnum);
+    constexpr auto digit         = MUNCHAR_STATIC_PREDICATE(::isdigit);
+    constexpr auto hex_digit     = MUNCHAR_STATIC_PREDICATE(::isxdigit);
+    constexpr auto ws_char       = MUNCHAR_STATIC_PREDICATE(::isspace);
     constexpr auto whitespace    = *ws_char;
     constexpr auto sign          = CLS("+-");
     constexpr auto id_start      = letter | underscore;
@@ -87,6 +88,12 @@ namespace Munchar {
     constexpr auto cpp_comment   = STR("//") ^ *(!eol ^ _) ^ ~eol;
     constexpr auto c_comment     = STR("/*") ^ *(!STR("*/") ^ _) ^ STR("*/");
     constexpr auto sh_comment    = CHR('#') ^ *(!eol ^ _) ^ ~eol;
+
+    constexpr auto lisp_true          = STR("#t");
+    constexpr auto lisp_false         = STR("#f");
+    constexpr auto lisp_id_start      = letter | underscore | hyphen;
+    constexpr auto lisp_id_body       = alphanumeric | underscore | hyphen;
+    constexpr auto lisp_identifier    = lisp_id_start^*lisp_id_body;
 
   }
 }
