@@ -1,5 +1,5 @@
-#ifndef VOLE_SLICE_OPS
-#define VOLE_SLICE_OPS
+#ifndef VOLE_APPEND
+#define VOLE_APPEND
 
 #include "slice.hpp"
 #include <initializer_list>
