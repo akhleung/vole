@@ -2,8 +2,6 @@
 #include "allocator.hpp"
 #include "value.hpp"
 #include <string>
-#include <initializer_list>
-#include <vector>
 
 namespace Vole {
 

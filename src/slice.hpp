@@ -1,13 +1,15 @@
 #ifndef VOLE_SLICE
 #define VOLE_SLICE
 
-#include <algorithm>
 #include <cstddef>
+#include <algorithm>
+#include <initializer_list>
+#include <vector>
 
 namespace Vole {
 
   class Allocator;
-  class Value;
+  struct Value;
 
   template <typename T>
   struct Slice {
