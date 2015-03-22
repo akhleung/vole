@@ -20,6 +20,10 @@ namespace Vole {
     return ss.str();
   }
 
+  string print(Symbol sym) {
+    return print(sym.name);
+  }
+
   string print(Value val) {
     stringstream ss;
     switch (val.type) {
@@ -30,7 +34,7 @@ namespace Vole {
         ss << val.content.number;
         break;
       case Value::SYMBOL:
-        ss << print(val.content.symbol.name);
+        ss << print(val.content.symbol);
         break;
       case Value::STRING:
         ss << print(val.content.string);
