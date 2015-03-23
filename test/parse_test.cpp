@@ -1,4 +1,7 @@
 #include "../src/tokenize.hpp"
+#include "../src/parser.hpp"
+#include "../src/print.hpp"
+#include "../src/context.hpp"
 #include <iostream>
 #include <vector>
 
@@ -30,6 +33,11 @@ int main() {
     }
     cout << string(t.beg, t.end) << endl;
   }
+
+  auto c = Context();
+  auto p = Parser((char * )("(hello (one two (three) ) )"), c);
+  Value result = p.parse();
+  cout << print(result) << endl;
 
 }
 
