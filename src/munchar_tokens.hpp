@@ -100,6 +100,17 @@ namespace Munchar {
     constexpr auto peculiar_identifier = plus | minus | ellipsis | right_arrow^*lisp_id_body;
     constexpr auto lisp_identifier     = lisp_id_start^*lisp_id_body | peculiar_identifier;
 
+    // constexpr auto lparen = CHR('(');
+    // constexpr auto rparen = CHR(')');
+    // constexpr auto hash = CHR('#');
+    // constexpr auto quote = CHR('\'');
+    // constexpr auto hash_t = hash ^ CLS("tT");
+    // constexpr auto hash_f = hash ^ CLS("fF");
+    // constexpr auto boolean = hash ^ CLS("tfTF");
+    // constexpr auto string = double_quote ^
+    //                         *(escape_seq | (!CLS("\"\\") ^ _)) ^
+    //                         double_quote;
+    
 
   }
 }
