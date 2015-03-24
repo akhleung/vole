@@ -15,10 +15,10 @@ namespace Vole {
     size_t index;
 
   public:
-    Parser(char* s, Context& c) : src(s), ctx(c), tokens(std::vector<Lexeme>()), index(0) { }
+    Parser(char* s, Context& c);
     Value parse();
     Value parse_value();
-    Value parse_list();
+    Value parse_vector();
   };
 
 }

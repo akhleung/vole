@@ -15,7 +15,7 @@ namespace Vole {
     } type;
     const char* beg;
     const char* end;
-    Lexeme(Type t, const char* b, const char* e) : type(t), beg(b), end(e) { }
+    Lexeme(Type t, const char* b, const char* e);
   };
 
   void tokenize(const char* src, std::vector<Lexeme>& tokens);
