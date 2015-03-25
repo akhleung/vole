@@ -32,7 +32,7 @@ namespace Vole {
         src = munched;
       } else {
         // TODO: replace with our own error object
-        throw "unrecognize token!";
+        throw "unrecognized token";
       }
     }
   }
