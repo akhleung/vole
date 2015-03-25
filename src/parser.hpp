@@ -9,13 +9,13 @@
 namespace Vole {
 
   class Parser {
-    char* src;
+    const char* src;
     Context& ctx;
     std::vector<Lexeme> tokens;
     size_t index;
 
   public:
-    Parser(char* s, Context& c);
+    Parser(const char* s, Context& c);
     Value parse();
     Value parse_value();
     Value parse_vector();

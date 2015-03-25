@@ -8,7 +8,7 @@ using namespace std;
 
 namespace Vole {
 
-  Parser::Parser(char* s, Context& c)
+  Parser::Parser(const char* s, Context& c)
   : src(s), ctx(c), tokens(std::vector<Lexeme>()), index(0) 
   { }
 
@@ -25,12 +25,12 @@ namespace Vole {
           return parse_vector();
         } break;
         case Lexeme::Type::BOOLEAN: {
-          if (std::string(cur.beg, cur.end) == "#t") {
+          if (string(cur.beg, cur.end) == "#t") {
             ++index;
             return ctx.new_boolean(true);
           } else {
             ++index;
-            return ctx.new_boolean(true);
+            return ctx.new_boolean(false);
           }
         } break;
         case Lexeme::Type::NUMBER: {

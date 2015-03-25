@@ -1,6 +1,5 @@
 #include "tokenize.hpp"
 #include "munchar_tokens.hpp"
-#include <vector>
 
 namespace Vole {
 
@@ -33,7 +32,7 @@ namespace Vole {
         src = munched;
       } else {
         // TODO: replace with our own error object
-        throw("unrecognize token!");
+        throw "unrecognize token!";
       }
     }
   }

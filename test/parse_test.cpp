@@ -35,9 +35,13 @@ int main() {
   }
 
   auto c = Context();
-  auto p = Parser((char * )("(hello (one two (three) ) )"), c);
+  auto p = Parser("(hello (one two (three) ) )", c);
   Value result = p.parse();
   cout << print(result) << endl;
+
+  auto p2 = Parser("(+ 1 2.34 -0.3 (* #f blah) ((fudge) #t))", c);
+  Value r2 = p2.parse();
+  cout << print(r2) << endl;
 
 }
 
