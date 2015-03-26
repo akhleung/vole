@@ -6,7 +6,6 @@
 
 namespace Munchar {
   namespace Tokens {
-
     // basic things
     constexpr auto _ = Any_Char { };
     constexpr auto newline = CHR('\n');
