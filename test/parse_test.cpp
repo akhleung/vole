@@ -48,7 +48,7 @@ int main() {
   Value result = p.parse();
   cout << print(result) << endl;
 
-  auto p2 = Parser("(+ 1 2.34 -0.3 '(doot (doot doot)) (* #f blah) ((fudge) #t) '#f \"hello\")", c);
+  auto p2 = Parser("(+ 1 2.34 -0.3 '(doot (doot doot)) ''double-quoted (* #f blah) ((fudge) #t) '#f \"hello\")", c);
   Value r2 = p2.parse();
   cout << print(r2) << endl;
 
