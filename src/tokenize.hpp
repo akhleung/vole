@@ -2,6 +2,7 @@
 #define VOLE_TOKENIZE
 
 #include <vector>
+#include <string>
 
 namespace Vole {
 
@@ -11,14 +12,26 @@ namespace Vole {
       RPAREN,
       IDENTIFIER,
       NUMBER,
-      BOOLEAN
+      BOOLEAN,
+      STRING,
+      QUOTE,
+      EOI,
+      ERROR
     } type;
-    const char* beg;
-    const char* end;
-    Lexeme(Type t, const char* b, const char* e);
+    std::string text;
+    size_t line;
+    Lexeme(
+      Type t,
+      const std::string& txt,
+      size_t ln
+    );
   };
 
-  void tokenize(const char* src, std::vector<Lexeme>& tokens);
+  void tokenize(
+    const char* src,
+    size_t line,
+    std::vector<Lexeme>& tokens
+  );
 
 }
 

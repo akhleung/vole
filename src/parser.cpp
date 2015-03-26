@@ -13,7 +13,7 @@ namespace Vole {
   { }
 
   Value Parser::parse() {
-    tokenize(src, tokens);
+    tokenize(src, 1, tokens);
     return parse_value();
   }
 
@@ -25,21 +25,20 @@ namespace Vole {
           return parse_vector();
         } break;
         case Lexeme::Type::BOOLEAN: {
-          if (string(cur.beg, cur.end) == "#t") {
-            ++index;
-            return ctx.new_boolean(true);
-          } else {
-            ++index;
-            return ctx.new_boolean(false);
-          }
+          ++index;
+          return ctx.new_boolean(cur.text == "#t");
         } break;
         case Lexeme::Type::NUMBER: {
           ++index;
-          return ctx.new_number(atof(string(cur.beg, cur.end).c_str()));
+          return ctx.new_number(atof(cur.text.c_str()));
         } break;
         case Lexeme::Type::IDENTIFIER: {
           ++index;
-          return ctx.new_symbol(string(cur.beg, cur.end));
+          return ctx.new_symbol(cur.text);
+        } break;
+        case Lexeme::Type::STRING: {
+          ++index;
+          return ctx.new_string(cur.text);
         } break;
         default: {
           throw("unexpected lexeme type!");

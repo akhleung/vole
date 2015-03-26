@@ -12,7 +12,7 @@ int main() {
 
   string src = "(def (factorial n) (if (= n 0) 1 (* n (factorial (- n 1)))))";
   vector<Lexeme> tokens;
-  tokenize(src.c_str(), tokens);
+  tokenize(src.c_str(), 1, tokens);
   for (auto t : tokens) {
     switch (t.type) {
       case Lexeme::Type::LPAREN:
@@ -30,8 +30,17 @@ int main() {
       case Lexeme::Type::BOOLEAN:
         cout << "BOOLEAN: ";
         break;
+      case Lexeme::Type::STRING:
+        cout << "STRING: ";
+        break;
+      case Lexeme::Type::QUOTE:
+        cout << "QUOTE: ";
+        break;
+      default:
+        cout << "WHAT? ";
+        break;
     }
-    cout << string(t.beg, t.end) << endl;
+    cout << t.text << endl;
   }
 
   auto c = Context();
@@ -39,7 +48,7 @@ int main() {
   Value result = p.parse();
   cout << print(result) << endl;
 
-  auto p2 = Parser("(+ 1 2.34 -0.3 (* #f blah) ((fudge) #t))", c);
+  auto p2 = Parser("(+ 1 2.34 -0.3 (* #f blah) ((fudge) #t) \"hello\")", c);
   Value r2 = p2.parse();
   cout << print(r2) << endl;
 

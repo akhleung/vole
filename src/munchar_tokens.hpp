@@ -83,7 +83,7 @@ namespace Munchar {
     constexpr auto sq_string     = single_quote ^
                                    *(escape_seq | (!CLS("'\\") ^ _)) ^
                                    single_quote;
-    constexpr auto string        = dq_string | sq_string;
+    // constexpr auto string        = dq_string | sq_string;
     constexpr auto eol           = newline | crlf;
     constexpr auto cpp_comment   = STR("//") ^ *(!eol ^ _) ^ ~eol;
     constexpr auto c_comment     = STR("/*") ^ *(!STR("*/") ^ _) ^ STR("*/");
@@ -94,12 +94,14 @@ namespace Munchar {
     constexpr auto right_arrow         = STR("->");
     constexpr auto lisp_true           = STR("#t") | STR("#T");
     constexpr auto lisp_false          = STR("#f") | STR("#F");
-    constexpr auto boolean             = lisp_true | lisp_false;
+    constexpr auto lisp_boolean        = lisp_true | lisp_false;
     constexpr auto lisp_id_start       = letter | underscore | hyphen | exclamation | dollar | percent | ampersand | asterisk | slash | colon | less_than | eq | greater_than | question | caret | tilde;
     constexpr auto lisp_id_body        = alphanumeric | lisp_id_start | plus | minus | dot | at;
-    constexpr auto peculiar_identifier = plus | minus | ellipsis | right_arrow^*lisp_id_body;
-    constexpr auto lisp_identifier     = lisp_id_start^*lisp_id_body | peculiar_identifier;
-
+    constexpr auto peculiar_identifier = plus | minus | ellipsis | (right_arrow^*lisp_id_body);
+    constexpr auto lisp_identifier     = (lisp_id_start^*lisp_id_body) | peculiar_identifier;
+    constexpr auto lisp_comment        = CHR(';') ^ *(!eol ^ _) ^ ~eol;
+    constexpr auto lisp_string         = dq_string;
+    constexpr auto spaces              = CLS(" \t\r");
     // constexpr auto lparen = CHR('(');
     // constexpr auto rparen = CHR(')');
     // constexpr auto hash = CHR('#');
