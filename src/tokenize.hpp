@@ -20,18 +20,10 @@ namespace Vole {
     } type;
     std::string text;
     size_t line;
-    Lexeme(
-      Type t,
-      const std::string& txt,
-      size_t ln
-    );
+    Lexeme(Type t, const std::string& txt, size_t ln);
   };
 
-  void tokenize(
-    const char* src,
-    size_t line,
-    std::vector<Lexeme>& tokens
-  );
+  void tokenize(const char* src, std::vector<Lexeme>& token, size_t line);
 
 }
 

@@ -10,9 +10,9 @@ using namespace Vole;
 
 int main() {
 
-  string src = "(def (factorial n) (if (= n 0) 1 (* n (factorial (- n 1)))))";
+  string src = "(def (factorial n) (if (= n 0) 'boop (* n (factorial (- n 1)))))";
   vector<Lexeme> tokens;
-  tokenize(src.c_str(), 1, tokens);
+  tokenize(src.c_str(), tokens, 1);
   for (auto t : tokens) {
     switch (t.type) {
       case Lexeme::Type::LPAREN:
@@ -48,7 +48,7 @@ int main() {
   Value result = p.parse();
   cout << print(result) << endl;
 
-  auto p2 = Parser("(+ 1 2.34 -0.3 (* #f blah) ((fudge) #t) \"hello\")", c);
+  auto p2 = Parser("(+ 1 2.34 -0.3 '(doot (doot doot)) (* #f blah) ((fudge) #t) '#f \"hello\")", c);
   Value r2 = p2.parse();
   cout << print(r2) << endl;
 

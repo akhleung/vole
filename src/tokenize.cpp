@@ -7,19 +7,11 @@ namespace Vole {
   using namespace Munchar;
   using namespace Munchar::Tokens;
 
-  Lexeme::Lexeme(
-    Type t,
-    const string& txt,
-    size_t ln
-  )
+  Lexeme::Lexeme(Type t, const string& txt, size_t ln)
   : type(t), text(txt), line(ln)
   { }
 
-  void tokenize(
-    const char* src,
-    size_t line,
-    vector<Lexeme>& tokens
-  ) {
+  void tokenize(const char* src, vector<Lexeme>& tokens, size_t line) {
     const char* munched;
     while (*src) {
       switch (*src) {

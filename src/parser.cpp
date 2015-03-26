@@ -13,7 +13,7 @@ namespace Vole {
   { }
 
   Value Parser::parse() {
-    tokenize(src, 1, tokens);
+    tokenize(src, tokens, 1);
     return parse_value();
   }
 
@@ -39,6 +39,10 @@ namespace Vole {
         case Lexeme::Type::STRING: {
           ++index;
           return ctx.new_string(cur.text);
+        } break;
+        case Lexeme::Type::QUOTE: {
+          ++index;
+          return ctx.new_vector({ctx.new_symbol("quote"), parse_value()});
         } break;
         default: {
           throw("unexpected lexeme type!");
