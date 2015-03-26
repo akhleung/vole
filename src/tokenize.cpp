@@ -5,7 +5,6 @@ namespace Vole {
 
   using namespace std;
   using namespace Munchar;
-  using namespace Munchar::Tokens;
 
   Lexeme::Lexeme(Type t, const string& txt, size_t ln)
   : type(t), text(txt), line(ln)
@@ -23,11 +22,11 @@ namespace Vole {
         case '\t':
         case '\r':
         case ' ':
-          munched = spaces(src);
+          munched = Tokens::spaces(src);
         break;
 
         case '"':
-          if ((munched = lisp_string(src))) {
+          if ((munched = Tokens::string(src))) {
             tokens.push_back(
               Lexeme(Lexeme::STRING, string(src, munched), line)
             );
@@ -40,7 +39,7 @@ namespace Vole {
         break;
 
         case '#':
-          if ((munched = lisp_boolean(src))) {
+          if ((munched = Tokens::boolean(src))) {
             tokens.push_back(
               Lexeme(Lexeme::BOOLEAN, string(src, munched), line)
             );
@@ -71,16 +70,16 @@ namespace Vole {
         break;
 
         case ';':
-          munched = lisp_comment(src);
+          munched = Tokens::line_comment(src);
           ++line;
         break;
 
         default:
-          if ((munched = number(src))) {
+          if ((munched = Tokens::number(src))) {
             tokens.push_back(
               Lexeme(Lexeme::NUMBER, string(src, munched), line)
             );
-          } else if ((munched = lisp_identifier(src))) {
+          } else if ((munched = Tokens::identifier(src))) {
             tokens.push_back(
               Lexeme(Lexeme::IDENTIFIER, string(src, munched), line)
             );
