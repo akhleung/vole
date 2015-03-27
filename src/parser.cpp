@@ -26,7 +26,7 @@ namespace Vole {
         } break;
         case Lexeme::Type::BOOLEAN: {
           ++index;
-          return ctx.new_boolean(cur.text == "#t");
+          return ctx.new_boolean((cur.text == "#t") | (cur.text == "#T"));
         } break;
         case Lexeme::Type::NUMBER: {
           ++index;
