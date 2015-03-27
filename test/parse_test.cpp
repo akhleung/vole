@@ -52,5 +52,15 @@ int main() {
   Value r2 = p2.parse();
   cout << print(r2) << endl;
 
+  auto fact_def
+    = R"(
+    (define (factorial n)
+      (if (= n 0)
+          1
+          (* n (factorial (- n 1)))))
+    )";
+  auto p3 = Parser(fact_def, c);
+  Value r3 = p3.parse();
+  cout << print(r3) << endl;
 }
 
