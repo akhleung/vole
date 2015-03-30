@@ -18,6 +18,7 @@ namespace Vole {
       STRING,
       // REGEXP,
       VECTOR,
+      UNDEFINED,
       // MAPPING,
       // FUNCTION,
       COLOR // for garbage collection; expected values are 'b', 'g', and 'w'

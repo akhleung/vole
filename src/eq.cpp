@@ -2,7 +2,7 @@
 
 namespace Vole {
 
-  bool eq(Value l, Value r) {
+  bool eq(const Value l, const Value r) {
     if (l.type == r.type) {
       switch (l.type) {
         case Value::BOOLEAN: return    l.content.boolean == r.content.boolean;
@@ -19,5 +19,13 @@ namespace Vole {
   }
 
   // provide definitions for eq on symbols and slices
+
+  bool operator==(const Symbol l, const Symbol r) {
+    return eq(l, r);
+  }
+
+  bool eq(const Symbol l, const Symbol r) {
+    return (l.name.beg == r.name.beg);
+  }
 
 }

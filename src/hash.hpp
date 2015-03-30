@@ -8,7 +8,7 @@ namespace std {
 
   template <>
   struct hash<Vole::Symbol> {
-    size_t operator()(Vole::Symbol sym);
+    size_t operator()(Vole::Symbol sym) const;
   };
 
 }
