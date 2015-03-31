@@ -44,7 +44,7 @@ namespace Vole {
           return ctx.new_vector({ctx.new_symbol("quote"), parse_value()});
         } break;
         default: {
-          throw("unexpected lexeme type!");
+          throw "unexpected lexeme type!";
         }
       }
     }
