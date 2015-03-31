@@ -3,34 +3,32 @@
 
 #include "slice.hpp"
 #include "symbol.hpp"
+#include "function.hpp"
 
 namespace Vole {
 
-  struct Value;
-  using String = Slice<char>;
-  using Vector = Slice<Value>;
-
   struct Value {
     enum Type {
+      UNDEFINED,
       BOOLEAN,
       NUMBER,
       SYMBOL,
       STRING,
       // REGEXP,
       VECTOR,
-      UNDEFINED,
       // MAPPING,
-      // FUNCTION,
+      FUNCTION,
       COLOR // for garbage collection; expected values are 'b', 'g', and 'w'
     } type;
 
     union Content {
-      bool    boolean;
-      double  number;
-      Symbol  symbol;
-      String  string;
-      Vector  vector;
-      char    color;
+      bool     boolean;
+      double   number;
+      Symbol   symbol;
+      String   string;
+      Vector   vector;
+      Function function;
+      char     color;
 
       Content();
       Content(bool b);
@@ -38,6 +36,7 @@ namespace Vole {
       Content(Symbol s);
       Content(String s);
       Content(Vector v);
+      Content(Function f);
       Content(char c);
     } content;
 
@@ -47,7 +46,10 @@ namespace Vole {
     Value(Symbol s);
     Value(String s);
     Value(Vector v);
+    Value(Function f);
     Value(char c);
+
+    operator bool();
   };
 
 }

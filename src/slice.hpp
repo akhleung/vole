@@ -89,6 +89,10 @@ namespace Vole {
     }
   }
 
+  struct Value;
+  using String = Slice<char>;
+  using Vector = Slice<Value>;
+
 }
 
 #endif
