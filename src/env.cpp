@@ -5,9 +5,9 @@ namespace Vole {
   : parent(par) { }
 
   Value Env::lookup(Symbol name) {
-    for (auto currentenv = this; currentenv; currentenv = currentenv->parent) {
-      if (currentenv->bindings.count(name)) {
-        return currentenv->bindings[name];
+    for (auto current = this; current; current = current->parent) {
+      if (current->bindings.count(name)) {
+        return current->bindings[name];
       }
     }
     return Value();
@@ -18,13 +18,13 @@ namespace Vole {
   }
 
   void Env::assign(Symbol name, Value value) {
-    for (auto currentenv = this; currentenv; currentenv = currentenv->parent) {
-      if (currentenv->bindings.count(name)) {
-        currentenv->bindings[name] = value;
+    for (auto current = this; current; current = current->parent) {
+      if (current->bindings.count(name)) {
+        current->bindings[name] = value;
         return;
       }
     }
-    throw "unbound variable!";
+    throw "assignment to unbound variable";
   }
 
 }
