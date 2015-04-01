@@ -17,17 +17,17 @@ int main() {
   auto hey = ctx.new_symbol("hey");
   auto args = ctx.new_vector({ one, two, three, four, five });
   auto more = ctx.new_vector({ one, two, three, four, hey });
-  auto sum = Primitives::add(ctx, args);
+  auto sum = Primitives::add(ctx, args.content.vector);
   cout << "sum: " << print(sum) << endl;
 
   try {
-    auto bum = Primitives::add(ctx, more);
+    auto bum = Primitives::add(ctx, more.content.vector);
     cout << "bum: " << print(bum) << endl;
   } catch (const char* msg) {
     cout << msg << endl;
   }
 
-  cout << "Is 'hey a number? " << print(Primitives::number_p(ctx, ctx.new_vector({ hey }))) << endl;
+  cout << "Is 'hey a number? " << print(Primitives::number_p(ctx, ctx.new_vector({ hey }).content.vector)) << endl;
 
   return 0;
 }
