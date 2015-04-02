@@ -1,13 +1,38 @@
 #include "context.hpp"
+#include "function.hpp"
+#include "primitives.hpp"
 #include <algorithm>
 
 namespace Vole {
 
   using namespace std;
+  using namespace Primitives;
 
   Context::Context()
-  : allocator(Allocator()), symbol_table(Symbol_Table())
-  { }
+  : allocator(Allocator()),
+    symbol_table(Symbol_Table()),
+    global_environment(Env(nullptr)) {
+
+    bind_primitive("boolean?", boolean_p);
+    bind_primitive("number?", number_p);
+    bind_primitive("symbol?", symbol_p);
+    bind_primitive("string?", string_p);
+    bind_primitive("vector?", vector_p);
+    bind_primitive("function?", function_p);
+    bind_primitive("+", add);
+    bind_primitive("-", sub);
+    bind_primitive("*", mul);
+    bind_primitive("/", div);
+    bind_primitive("length", length);
+    bind_primitive("map", map);
+    bind_primitive("filter", filter);
+
+  }
+
+  void Context::bind_primitive(const char* name, Primitive prim) {
+    auto name_sym = new_symbol(name).content.symbol;
+    global_environment.bind(name_sym, prim);
+  }
 
   Value Context::new_boolean(bool b) {
     return Value(b);

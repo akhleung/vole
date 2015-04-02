@@ -8,15 +8,7 @@ namespace Vole {
 
     using namespace std;
 
-    bool number_p(Value arg) {
-      return arg.type == Value::NUMBER;
-    }
-
-    Value number_p(Context& ctx, Vector args) {
-      return number_p(*args.begin());
-    }
-
-    bool boolean_p(Value arg) {
+    static bool boolean_p(Value arg) {
       return arg.type == Value::BOOLEAN;
     }
 
@@ -24,7 +16,15 @@ namespace Vole {
       return boolean_p(*args.begin());
     }
 
-    bool symbol_p(Value arg) {
+    static bool number_p(Value arg) {
+      return arg.type == Value::NUMBER;
+    }
+
+    Value number_p(Context& ctx, Vector args) {
+      return number_p(*args.begin());
+    }
+
+    static bool symbol_p(Value arg) {
       return arg.type == Value::SYMBOL;
     }
 
@@ -32,7 +32,7 @@ namespace Vole {
       return symbol_p(*args.begin());
     }
 
-    bool string_p(Value arg) {
+    static bool string_p(Value arg) {
       return arg.type == Value::STRING;
     }
 
@@ -40,7 +40,7 @@ namespace Vole {
       return string_p(*args.begin());
     }
 
-    bool vector_p(Value arg) {
+    static bool vector_p(Value arg) {
       return arg.type == Value::VECTOR;
     }
 
@@ -48,7 +48,7 @@ namespace Vole {
       return vector_p(*args.begin());
     }
 
-    bool function_p(Value arg) {
+    static bool function_p(Value arg) {
       return arg.type == Value::FUNCTION;
     }
 

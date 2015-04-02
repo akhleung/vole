@@ -3,6 +3,7 @@
 
 #include "allocator.hpp"
 #include "symbol.hpp"
+#include "env.hpp"
 #include "value.hpp"
 #include <string>
 #include <vector>
@@ -12,6 +13,7 @@ namespace Vole {
   class Context {
   public:
     Context();
+    void bind_primitive(const char* name, Primitive prim);
     Value new_boolean(bool b);
     Value new_number(double d);
     Value new_symbol(const std::string& name);
@@ -23,6 +25,7 @@ namespace Vole {
   // private:
     Allocator allocator;
     Symbol_Table symbol_table;
+    Env global_environment;
   };
 
 }
