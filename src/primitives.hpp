@@ -14,6 +14,7 @@ namespace Vole {
     Value sub(Context& ctx, Vector args);
     Value mul(Context& ctx, Vector args);
     Value div(Context& ctx, Vector args);
+    Value length(Context& ctx, Vector args);
     Value map(Context& ctx, Vector args);
     Value filter(Context& ctx, Vector args);
 

@@ -16,12 +16,12 @@ namespace Vole {
       return number_p(*args.begin());
     }
 
-    bool bool_p(Value arg) {
+    bool boolean_p(Value arg) {
       return arg.type == Value::BOOLEAN;
     }
 
-    Value bool_p(Context& ctx, Vector args) {
-      return bool_p(*args.begin());
+    Value boolean_p(Context& ctx, Vector args) {
+      return boolean_p(*args.begin());
     }
 
     bool symbol_p(Value arg) {
@@ -115,39 +115,58 @@ namespace Vole {
       return ctx.new_number(divis);
     }
 
+    Value length(Context& ctx, Vector args) {
+      auto val = args[0];
+      if (val.type == Value::STRING) {
+        return ctx.new_number(val.content.string.len);
+      } else if (val.type == Value::VECTOR) {
+        return ctx.new_number(val.content.vector.len);
+      } else {
+        throw "argument to `length` must be a string or vector";
+      }
+    }
+
     Value map(Context& ctx, Vector args) {
-      auto f = args[0];
-      auto list = args[1];
-      if (f.type != Value::FUNCTION) {
-        throw "first argument to map must be a function";
+      auto fun = args[0];
+      auto vec = args[1];
+      if (fun.type != Value::FUNCTION) {
+        throw "first argument to `map` must be a function";
       }
-      if (list.type != Value::VECTOR) {
-       throw "second argument to map must be a vector"; 
+      if (vec.type != Value::VECTOR) {
+        throw "second argument to `map` must be a vector"; 
       }
-      auto results = ctx.new_vector(list.content.vector.len);
-      for (Value item : list.content.vector) {
+      auto results = ctx.new_vector(vec.content.vector.len);
+      for (Value item : vec.content.vector) {
         Value argbuffer[1] = { item };
         Vector fargs = Vector(argbuffer, 1);
-        results.content.vector = append(ctx.allocator, results.content.vector, f.content.function(ctx, fargs));
+        results.content.vector = append(
+          ctx.allocator,
+          results.content.vector,
+          fun.content.function(ctx, fargs)
+        );
       }
       return results;
     }
 
     Value filter(Context& ctx, Vector args) {
-      auto f = args[0];
-      auto list = args[1];
-      if (f.type != Value::FUNCTION) {
-        throw "first argument to filter must be a function";
+      auto fun = args[0];
+      auto vec = args[1];
+      if (fun.type != Value::FUNCTION) {
+        throw "first argument to `filter` must be a function";
       }
-      if (list.type != Value::VECTOR) {
-       throw "second argument to filter must be a vector"; 
+      if (vec.type != Value::VECTOR) {
+        throw "second argument to `filter` must be a vector"; 
       }
-      auto results = ctx.new_vector(list.content.vector.len);
-      for (Value item : list.content.vector) {
+      auto results = ctx.new_vector(0);
+      for (Value item : vec.content.vector) {
         Value argbuffer[1] = { item };
         Vector fargs = Vector(argbuffer, 1);
-        if (f.content.function(ctx, fargs).content.boolean == true) {
-          results.content.vector = append(ctx.allocator, results.content.vector, item);
+        if (fun.content.function(ctx, fargs).content.boolean) {
+          results.content.vector = append(
+            ctx.allocator,
+            results.content.vector,
+            item
+          );
         }
       }
       return results;
