@@ -10,7 +10,7 @@ namespace Vole {
         return current->bindings[name];
       }
     }
-    return Value();
+    throw "unbound variable";
   }
 
   void Env::bind(Symbol name, Value value) {
