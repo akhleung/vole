@@ -1,6 +1,7 @@
 #include "env.hpp"
 
 namespace Vole {
+
   Env::Env(Env* par)
   : parent(par) { }
 
