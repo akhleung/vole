@@ -29,7 +29,7 @@ namespace Vole {
     }
   }
 
-  Value apply(Context& ctx, Function func, Vector args, Env& env) {
+  Value apply(Context& ctx, Function func, Vector args) {
 
   }
 
