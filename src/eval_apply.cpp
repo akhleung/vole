@@ -6,8 +6,11 @@
 
 namespace Vole {
 
+  static Value eval_combination(Context& ctx, Vector expr, Env& env);
+
   Value eval(Context& ctx, Value expr, Env& env) {
     switch (expr.type) {
+      // atomic expressions
       case Value::BOOLEAN:
       case Value::NUMBER:
       case Value::STRING:
@@ -19,6 +22,7 @@ namespace Vole {
         // ???
       break;
 
+      // compound expressions
       case Value::VECTOR:
         // ???
       break;
@@ -27,6 +31,10 @@ namespace Vole {
         throw "unrecognized expression";
       break;
     }
+  }
+
+  Value eval_combination(Context& ctx, Vector expr, Env& env) {
+
   }
 
   Value apply(Context& ctx, Function func, Vector args) {
