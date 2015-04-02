@@ -53,6 +53,8 @@ int main() {
 
   cout << "(length '(1 hey 3 ho 5)) => " << print(Primitives::length(ctx, ctx.new_vector({ more }).content.vector)) << endl;
   cout << "(length \"hello\") => " << print(Primitives::length(ctx, ctx.new_vector({ ctx.new_string("hello") }).content.vector)) << endl;
+
+  cout << "printing out `number?`: " << print(nump) << endl;
   return 0;
 }
 

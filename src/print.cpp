@@ -42,6 +42,9 @@ namespace Vole {
       case Value::VECTOR:
         ss << print(val.content.vector);
         break;
+      case Value::FUNCTION:
+        ss << "[native function]";
+        break;
       default:
         break;
     }
