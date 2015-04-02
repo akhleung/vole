@@ -54,6 +54,7 @@ int main() {
 
   auto fact_def
     = R"(
+    ; everyone's favorite introductory recursive function
     (define (factorial n)
       (if (= n 0)
           1
@@ -62,5 +63,14 @@ int main() {
   auto p3 = Parser(fact_def, c);
   Value r3 = p3.parse();
   cout << print(r3) << endl;
+
+  auto expr_comment
+    = R"(
+    (blah blah #; (this should not be here) etc)
+    )";
+  auto p4 = Parser(expr_comment, c);
+  Value r4 = p4.parse();
+  cout << print(r4) << endl;
+
 }
 

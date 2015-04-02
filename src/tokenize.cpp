@@ -43,6 +43,10 @@ namespace Vole {
             tokens.push_back(
               Lexeme(Lexeme::BOOLEAN, string(src, munched), line)
             );
+          } else if ((munched = Tokens::hash_comment(src))) {
+            tokens.push_back(
+              Lexeme(Lexeme::COMMENT, string(src, munched), line)
+            );
           } else {
             // unrecognized hash-thingy
             tokens.push_back(

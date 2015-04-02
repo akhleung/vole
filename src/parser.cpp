@@ -20,31 +20,38 @@ namespace Vole {
     while (index < tokens.size()) {
       Lexeme cur = tokens[index];
       switch (cur.type) {
-        case Lexeme::Type::LPAREN: {
+        case Lexeme::LPAREN: {
           return parse_vector();
         } break;
-        case Lexeme::Type::BOOLEAN: {
+        case Lexeme::RPAREN: {
+          throw "unmatched right-parenthesis";
+        } break;
+        case Lexeme::BOOLEAN: {
           ++index;
           return ctx.new_boolean((cur.text == "#t") | (cur.text == "#T"));
         } break;
-        case Lexeme::Type::NUMBER: {
+        case Lexeme::NUMBER: {
           ++index;
           return ctx.new_number(atof(cur.text.c_str()));
         } break;
-        case Lexeme::Type::IDENTIFIER: {
+        case Lexeme::IDENTIFIER: {
           ++index;
           return ctx.new_symbol(cur.text);
         } break;
-        case Lexeme::Type::STRING: {
+        case Lexeme::STRING: {
           ++index;
           return ctx.new_string(cur.text);
         } break;
-        case Lexeme::Type::QUOTE: {
+        case Lexeme::QUOTE: {
           ++index;
-          return ctx.new_vector({ctx.new_symbol("quote"), parse_value()});
+          return ctx.new_vector({ ctx.new_symbol("quote"), parse_value() });
+        } break;
+        case Lexeme::COMMENT: {
+          ++index;
+          parse_value(); // discard the next value
         } break;
         default: {
-          throw "unexpected lexeme type!";
+          throw "unexpected token";
         }
       }
     }
@@ -55,7 +62,10 @@ namespace Vole {
     // pop left paren
     ++index;
     vector<Value> vec;
-    while (tokens[index].type != Lexeme::Type::RPAREN) {
+    while (tokens[index].type != Lexeme::RPAREN) {
+      if (tokens[index].type == Lexeme::EOI) {
+        throw "unterminated parenthesized expression";
+      }
       Value v = parse_value();
       vec.push_back(v);
     }

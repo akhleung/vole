@@ -15,6 +15,7 @@ namespace Vole {
       BOOLEAN,
       STRING,
       QUOTE,
+      COMMENT,
       EOI,
       ERROR
     } type;
