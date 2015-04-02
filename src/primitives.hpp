@@ -11,6 +11,11 @@ namespace Vole {
     
     Value number_p(Context& ctx, Vector args);
     Value add(Context& ctx, Vector args);
+    Value sub(Context& ctx, Vector args);
+    Value mul(Context& ctx, Vector args);
+    Value div(Context& ctx, Vector args);
+    Value map(Context& ctx, Vector args);
+    Value filter(Context& ctx, Vector args);
 
   }
 }

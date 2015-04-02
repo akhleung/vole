@@ -1,6 +1,7 @@
 #include "primitives.hpp"
 #include "context.hpp"
 #include "value.hpp"
+#include "append.hpp"
 
 namespace Vole {
   namespace Primitives {
@@ -66,16 +67,91 @@ namespace Vole {
       return ctx.new_number(sum);
     }
 
-    // Value sub(Context& ctx, Vector args) {
-    //   double diff = 0;
-    //   for (Value arg : args) {
-    //     if (!number_p(arg)) {
-    //       throw "arguments to `+` must be numbers";
-    //     }
-    //     diff += arg.content.number;
-    //   }
-    //   return ctx.new_number(sum);
-    // }
+    Value sub(Context& ctx, Vector args) {
+      if (args.len < 1) {
+        throw "at least one argument required to `-`";
+      }
+      if (args.len == 1) {
+        return ctx.new_number(0 - args[0].content.number);
+      }
+      double diff = args[0].content.number;
+      for (Value arg : args) {
+        if (!number_p(arg)) {
+          throw "arguments to `-` must be numbers";
+        }
+        diff -= arg.content.number;
+      }
+      return ctx.new_number(diff);
+    }
+
+    Value mul(Context& ctx, Vector args) {
+      double prod = 1;
+      for (Value arg : args) {
+        if (!number_p(arg)) {
+          throw "arguments to `*` must be numbers";
+        }
+        prod *= arg.content.number;
+      }
+      return ctx.new_number(prod);
+    }
+
+    Value div(Context& ctx, Vector args) {
+      if (args.len < 1) {
+        throw "at least one argument required to `/`";
+      }
+      if (args.len == 1) {
+        return ctx.new_number(1 / args[0].content.number);
+      }
+      double divis = args[0].content.number;
+      for (Value arg : args) {
+        if (!number_p(arg)) {
+          throw "arguments to `-` must be numbers";
+        }
+        if (arg.content.number == 0) {
+          throw "cannot divide by 0";
+        }
+        divis /= arg.content.number;
+      }
+      return ctx.new_number(divis);
+    }
+
+    Value map(Context& ctx, Vector args) {
+      auto f = args[0];
+      auto list = args[1];
+      if (f.type != Value::FUNCTION) {
+        throw "first argument to map must be a function";
+      }
+      if (list.type != Value::VECTOR) {
+       throw "second argument to map must be a vector"; 
+      }
+      auto results = ctx.new_vector(list.content.vector.len);
+      for (Value item : list.content.vector) {
+        Value argbuffer[1] = { item };
+        Vector fargs = Vector(argbuffer, 1);
+        results.content.vector = append(ctx.allocator, results.content.vector, f.content.function(ctx, fargs));
+      }
+      return results;
+    }
+
+    Value filter(Context& ctx, Vector args) {
+      auto f = args[0];
+      auto list = args[1];
+      if (f.type != Value::FUNCTION) {
+        throw "first argument to filter must be a function";
+      }
+      if (list.type != Value::VECTOR) {
+       throw "second argument to filter must be a vector"; 
+      }
+      auto results = ctx.new_vector(list.content.vector.len);
+      for (Value item : list.content.vector) {
+        Value argbuffer[1] = { item };
+        Vector fargs = Vector(argbuffer, 1);
+        if (f.content.function(ctx, fargs).content.boolean == true) {
+          results.content.vector = append(ctx.allocator, results.content.vector, item);
+        }
+      }
+      return results;
+    }
 
   }
 }

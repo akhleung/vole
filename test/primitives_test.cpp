@@ -14,11 +14,28 @@ int main() {
   auto three = ctx.new_number(3);
   auto four = ctx.new_number(4);
   auto five = ctx.new_number(5);
+  auto negfive = ctx.new_number(-5);
   auto hey = ctx.new_symbol("hey");
   auto args = ctx.new_vector({ one, two, three, four, five });
+  auto argsone = ctx.new_vector({ five });
+  auto argsneg = ctx.new_vector({ negfive });
   auto more = ctx.new_vector({ one, two, three, four, hey });
   auto sum = Primitives::add(ctx, args.content.vector);
   cout << "sum: " << print(sum) << endl;
+  auto diff = Primitives::sub(ctx, args.content.vector);
+  cout << "diff: " << print(diff) << endl;
+  auto diffone = Primitives::sub(ctx, argsone.content.vector);
+  cout << "diff one arg: " << print(diffone) << endl;
+  auto diffneg = Primitives::sub(ctx, argsneg.content.vector);
+  cout << "diff negative arg: " << print(diffneg) << endl;
+  auto prod = Primitives::mul(ctx, args.content.vector);
+  cout << "mul: " << print(prod) << endl;
+  auto divis = Primitives::div(ctx, args.content.vector);
+  cout << "divis: " << print(divis) << endl;
+  auto divisone = Primitives::div(ctx, argsone.content.vector);
+  cout << "divis one arg: " << print(divisone) << endl;
+  auto divisneg = Primitives::div(ctx, argsneg.content.vector);
+  cout << "divis negative arg: " << print(divisneg) << endl;
 
   try {
     auto bum = Primitives::add(ctx, more.content.vector);
@@ -28,6 +45,12 @@ int main() {
   }
 
   cout << "Is 'hey a number? " << print(Primitives::number_p(ctx, ctx.new_vector({ hey }).content.vector)) << endl;
+
+  auto nump = Function(Primitives::number_p);
+  cout << "(map number? '(1 2 3 4 hey)) " << print(Primitives::map(ctx, ctx.new_vector({nump, more}).content.vector)) << endl;
+
+  cout << "(filter number? '(1 2 3 4 hey)) " << print(Primitives::filter(ctx, ctx.new_vector({nump, more}).content.vector)) << endl;
+
 
   return 0;
 }

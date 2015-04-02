@@ -20,7 +20,7 @@ namespace Vole {
     Value new_vector(size_t cap);
     Value new_vector(const std::initializer_list<Value>& lst);
     Value new_vector(const std::vector<Value>& vec);
-  private:
+  // private:
     Allocator allocator;
     Symbol_Table symbol_table;
   };
