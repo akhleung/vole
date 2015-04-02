@@ -72,5 +72,25 @@ int main() {
   Value r4 = p4.parse();
   cout << print(r4) << endl;
 
+  auto unmatched_paren = ") a b c";
+  auto p5 = Parser(unmatched_paren, c);
+  try {
+    Value r5 = p5.parse();
+    cout << print(r5) << endl;
+  }
+  catch (const char* msg) {
+    cout << msg << endl;
+  }
+
+  auto unterminated_expr = "(a b c";
+  auto p6 = Parser(unterminated_expr, c);
+  try {
+    Value r6 = p6.parse();
+    cout << print(r6) << endl;
+  }
+  catch (const char* msg) {
+    cout << msg << endl;
+  }
+
 }
 
