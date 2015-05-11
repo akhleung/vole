@@ -12,7 +12,7 @@ namespace Vole {
   using Vector = Slice<Value>;
 
   Value eval(Context& ctx, Value expr, Env& env);
-  Value apply(Context& ctx, Function func, Vector args, Env& env);
+  Value apply(Context& ctx, Function func, Vector args);
 
 }
 

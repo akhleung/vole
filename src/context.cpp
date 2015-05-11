@@ -31,7 +31,7 @@ namespace Vole {
 
   void Context::bind_primitive(const char* name, Primitive prim) {
     auto name_sym = new_symbol(name).content.symbol;
-    global_environment.bind(name_sym, prim);
+    global_environment.bind(name_sym, Value(Function(prim)));
   }
 
   Value Context::new_boolean(bool b) {

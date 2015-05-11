@@ -1,3 +1,4 @@
+#include "append.hpp"
 #include "eval_apply.hpp"
 #include "context.hpp"
 #include "env.hpp"
@@ -19,12 +20,12 @@ namespace Vole {
       break;
 
       case Value::SYMBOL:
-        return env.lookup(expr);
+        return env.lookup(expr.content.symbol);
       break;
 
       // compound expressions
       case Value::VECTOR:
-        return eval_combination(ctx, expr.content.vector, env)
+        return eval_combination(ctx, expr.content.vector, env);
       break;
 
       default:
@@ -41,32 +42,13 @@ namespace Vole {
     } else {
       Value results = ctx.new_vector(expr.len);
       for (int i = 0; i < expr.len; ++i) {
-        results = append(ctx.allocator, results, eval(ctx, expr[i], env));
+        results = append(ctx.allocator, results.content.vector, eval(ctx, expr[i], env));
       }
-      if (results.head().type != Value::FUNCTION) {
+      if (results.content.vector.head().type != Value::FUNCTION) {
         throw "first argument is not a function";
       }
-      return apply(ctx, results.head().content.function, results.tail());
+      return apply(ctx, results.content.vector.head().content.function, results.content.vector.tail());
     }
-
-    // switch (id.type) {
-    //   case Value::SYMBOL:
-    //     if (id == quote) {
-    //       return expr[1];
-    //     }
-
-    //   break;
-    //  default:
-    //    Value results = ctx.new_vector(expr.len);
-    //    for (int i = 0; i < expr.len; ++i) {
-    //      results.append(eval(ctx, expr[i], env));
-    //    }
-    //    if (results[0].type != Value::FUNCTION) {
-    //      throw "first argument is not a function";
-    //    }
-    //    return apply(ctx, results[0], results[1]);
-    //  break;
-    // }
   }
 
   Value apply(Context& ctx, Function func, Vector args) {

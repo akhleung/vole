@@ -13,7 +13,7 @@ namespace Vole {
   struct Function {
     Primitive primitive;
 
-    Function(Primitive p);
+    explicit Function(Primitive p);
     Value operator()(Context& ctx, Vector args);
   };
 
